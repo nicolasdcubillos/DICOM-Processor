@@ -407,6 +407,8 @@ for c, row in enumerate(X_train):
         else: im = im[width-nodule_size:width+nodule_size, width-nodule_size:width+nodule_size]
 
         x[c, 0, i, :, :] = T.from_numpy(np.array(im).astype(np.float32))
+        
+        #print('patient malignancy', patient.malignancy)
         if(int(patient.malignancy) == 1): y[c, 0:] = T.Tensor([1., 0., 0., 0.])
         if(int(patient.malignancy) == 2): y[c, 0:] = T.Tensor([0., 1., 0., 0.])
         if(int(patient.malignancy) == 4): y[c, 0:] = T.Tensor([0., 0., 1., 0.])
@@ -492,6 +494,7 @@ def get_dataset(LIDC_path):
             else: im = im[width-nodule_size:width+nodule_size, width-nodule_size:width+nodule_size]
 
 #             print(patient.malignancy)
+            print('patient malignancy', patient.malignancy)
             x[c, 0, i, :, :] = T.from_numpy(np.array(im).astype(np.float32))
             if(int(patient.malignancy) == 1): y[c, 0:] = 0
             if(int(patient.malignancy) == 2): y[c, 0:] = 1
@@ -701,7 +704,7 @@ def create_csv(frames, folder, output_path):
                 "patient_id": 1012,
                 "nodule_no": nodule_no,
                 "folder": folder,  # Utiliza el valor de `folder` sin el número de nódulo
-                "malignancy": 4,
+                "malignancy": 2,
                 "is_cancer": True,
                 "calcification": 6,
                 "lobulation": 3,
@@ -735,14 +738,14 @@ def noduleclassification():
         if 'filename' not in data:
             return jsonify({'error': 'El campo "filename" es obligatorio.'}), 400
 
-        if 'data' not in data or not isinstance(data['data'], list):
-            return jsonify({'error': 'El campo "data" debe ser una lista.'}), 400
+        if 'dicom' not in data or not isinstance(data['dicom'], list):
+            return jsonify({'error': 'El campo "dicom" debe ser una lista.'}), 400
 
-        #shape = np.array(data['data']).shape
+        #shape = np.array(data['dicom']).shape
         #if len(shape) != 3 or shape[0] != 32 or shape[1] != 32:
             #return jsonify({'error': 'El arreglo debe ser de 32x32x(cualquier dimensión).'}), 400
 
-        numpy_array = np.array(data['data'])
+        numpy_array = np.array(data['dicom'])
         filename = data['filename']
 
         LIDC_path_test = "D:\JAVERIANA\TG\Modelo\LIDC-IDRI_images_npy_3d_HU_TEST"
