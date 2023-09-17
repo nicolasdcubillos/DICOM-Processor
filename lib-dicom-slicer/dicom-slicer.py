@@ -8,8 +8,7 @@ class DicomProcessor:
         self.width = 32
         self.height = 32
         self.depth = 5
-        self.INPUT_PATH = 'INPUT/'
-        self.OUTPUT_PATH = 'OUTPUT/'
+        self.OUTPUT_PATH = 'D:\JAVERIANA\TG\DICOM-Processor\lib-dicom-slicer\OUTPUT'
         self.FILENAME = ''
         # Configuración temporal, cambiar para leer desde archivo properties o similar
         self.x_start = 0
@@ -38,15 +37,21 @@ class DicomProcessor:
             self.save(0, recorte)
 
     def save(self, frame, data):
-        filename = self.FILENAME.split('.')[0] + "_" + str(frame) + ".npy"
-        if not os.path.exists(self.OUTPUT_PATH):
-            os.makedirs(self.OUTPUT_PATH)
+        foldername = os.path.splitext(os.path.basename(self.FILENAME))[0]
+        filename = foldername + "_" + str(frame) + ".npy"
+        folder_path = os.path.join(self.OUTPUT_PATH, foldername)
+        print('folder_path: ', folder_path)
+        print('filename: ', filename)
 
-        path = os.path.join(self.OUTPUT_PATH, filename)
-        np.save(path, data)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        file_path = os.path.join(folder_path, filename)
+        np.save(file_path, data)
+
         if self.debug:
             print(data)
-            print(f"Frame {frame} saved in '{path}'")
+            print(f"Frame {frame} saved in '{file_path}'")
 
     @staticmethod
     def print_pixel_array(pixel_array):
