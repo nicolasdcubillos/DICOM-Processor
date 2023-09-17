@@ -20,7 +20,7 @@ class DicomProcessor:
         self.numpy_array = None
 
     def open_dicom(self):
-        self.dataset = pydicom.dcmread(self.INPUT_PATH + self.FILENAME)
+        self.dataset = pydicom.dcmread(self.FILENAME)
         self.numpy_array = self.dataset.pixel_array
 
         if self.debug:
