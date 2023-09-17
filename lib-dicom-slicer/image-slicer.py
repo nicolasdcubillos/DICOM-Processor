@@ -20,7 +20,7 @@ class DicomProcessor:
         self.numpy_array = None
 
     def open_dicom(self):
-        self.dataset = pydicom.dcmread(self.INPUT_PATH + self.FILENAME)
+        self.dataset = pydicom.dcmread(self.FILENAME)
         self.numpy_array = self.dataset.pixel_array
 
         if self.debug:
@@ -62,8 +62,11 @@ class DicomProcessor:
 if __name__ == "__main__":
     dicom_processor = DicomProcessor()
 
-    if len(sys.argv) != 2:
-        print("Usage: python dicom_processor.py DICOM_FILE.DCM")
+    if len(sys.argv) != 5:
+        print("Usage: python dicom_processor.py DICOM_FILE.DCM x y z")
     else:
         dicom_processor.FILENAME = sys.argv[1]
+        dicom_processor.x_start = sys.argv[2]
+        dicom_processor.y_start = sys.argv[3]
+        dicom_processor.z_start = sys.argv[4]
         dicom_processor.start()
