@@ -32,6 +32,8 @@ import csv
 import pandas as pd
 import traceback
 import yaml
+import uuid
+import shutil
 from PIL import Image
 from itertools import chain
 from sklearn import metrics
@@ -54,6 +56,7 @@ from torchvision import datasets, models, transforms
 from torchvision.models.resnet import resnet50
 from kornia.utils.one_hot import one_hot
 from sklearn.model_selection import StratifiedKFold
+import io
 
 
 import warnings
@@ -474,6 +477,8 @@ def get_dataset(LIDC_path):
     y = T.zeros((num_data, 1))
 
     for c, row in enumerate(df["folder"]):
+        print('LIDC_path: ', LIDC_path)
+        print('ROW: ', row)
         patient_folder  = os.path.join(LIDC_path,row)
         print('patient folder:' + patient_folder)
         length_folder   = len(os.listdir(patient_folder))
@@ -493,7 +498,8 @@ def get_dataset(LIDC_path):
                                image_folder[middle_value+1], image_folder[middle_value+2]]
         patient = df[df['folder'] == row]
         for i, value in enumerate(tensor_image_3d):
-            
+            print('root: ', root)
+            print('value: ', value)
             im = np.load(os.path.join(root, patient_folder, value))
             im = im - np.min(im)
             im = ((im/np.max(im))*255).astype(np.uint8)
@@ -504,11 +510,11 @@ def get_dataset(LIDC_path):
 
 #            print(patient.malignancy)
             x[c, 0, i, :, :] = T.from_numpy(np.array(im).astype(np.float32))
-            if(int(patient.malignancy) == 1): y[c, 0:] = 0
-            if(int(patient.malignancy) == 2): y[c, 0:] = 1
-            if(int(patient.malignancy) == 3): y[c, 0:] = 2
-            if(int(patient.malignancy) == 4): y[c, 0:] = 3
-            if(int(patient.malignancy) == 5): y[c, 0:] = 4
+            if(int(patient.malignancy.iloc[0]) == 1): y[c, 0:] = 0
+            if(int(patient.malignancy.iloc[0]) == 2): y[c, 0:] = 1
+            if(int(patient.malignancy.iloc[0]) == 3): y[c, 0:] = 2
+            if(int(patient.malignancy.iloc[0]) == 4): y[c, 0:] = 3
+            if(int(patient.malignancy.iloc[0]) == 5): y[c, 0:] = 4
 
     mu = x.mean()
     sd = x.std()
@@ -709,7 +715,7 @@ def create_csv(frames, folder, output_path):
 
         for nodule_no in range(0, frames):
             row_data = {
-                "patient_id": 1012,
+                "patient_id": 0,
                 "nodule_no": nodule_no,
                 "folder": folder,  # Utiliza el valor de `folder` sin el número de nódulo
                 "malignancy": 2,
@@ -738,42 +744,49 @@ def save_npy(output_path, filename, frame, data):
 
 app = Flask(__name__)
 
-@app.route('/nodule-classification')
-def noduleclassification():
+def process_request(request):
+    LIDC_path_prod = config.get('LIDC_path_prod', '')
+    files = [request.files.get(f'dicom_{i}', None) for i in range(1, 6)]
+    filename = str(uuid.uuid4())
+    valid_files = [file for file in files if file is not None]
+    
+    if valid_files:
+        data_list = []
+        
+        for iteration, file in enumerate(valid_files):
+            npy_bytes = file.read()
+            npy_array = np.load(io.BytesIO(npy_bytes))
+            data_list.append(npy_array)
+            save_npy(LIDC_path_prod, filename, iteration, npy_array)
+    
+        create_csv(len(valid_files), filename, LIDC_path_prod) # Metadata
+        return filename
+    else:
+        return None
+    
+def end_request(filename):
+    path = os.path.join(config.get('LIDC_path_prod', ''), filename)
+    shutil.rmtree(path)
+    #os.rmdir(path)
+    
+@app.route('/nodule-classification', methods=['POST'])
+def upload_npy():
     try:
-        data = request.get_json()
-
-        if 'filename' not in data:
-            return jsonify({'error': 'El campo "filename" es obligatorio.'}), 400
-
-        if 'dicom' not in data or not isinstance(data['dicom'], list):
-            return jsonify({'error': 'El campo "dicom" debe ser una lista.'}), 400
-
-        #shape = np.array(data['dicom']).shape
-        #if len(shape) != 3 or shape[0] != 32 or shape[1] != 32:
-            #return jsonify({'error': 'El arreglo debe ser de 32x32x(cualquier dimensión).'}), 400
-
-        numpy_array = np.array(data['dicom'])
-        filename = data['filename']
         LIDC_path_prod = config.get('LIDC_path_prod', '')
-        
-        create_csv(len(numpy_array), filename, LIDC_path_prod)
-        print(len(numpy_array))
-        for frame in 0, len(numpy_array) - 1:
-            #print(numpy_array)
-            save_npy(LIDC_path_prod, filename, frame, numpy_array[frame])
-        
-        prediction_, class_ =  kfold(LIDC_path_prod,
-                                    376,
-                                    name='binary_Indeterminate_values',
-                                    device='cpu',
-                                    deterministic=True,
-                                    dataset_func=get_dataset)
-
-        return str(list(prediction_[0]))
+        filename = process_request(request)
+        if filename:
+            prediction_ = kfold(LIDC_path_prod,
+                                        376,
+                                        name='binary_Indeterminate_values',
+                                        device='cpu',
+                                        deterministic=True,
+                                        dataset_func=get_dataset)
+            end_request(filename)
+            return str(list(prediction_[0]))
+        else:
+            return "No se envió ningún archivo .npy en la solicitud.", 400
     except Exception as e:
         traceback_str = traceback.format_exc()
-        # Devuelve el error junto con el número de línea
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
 
 if __name__ == '__main__':
