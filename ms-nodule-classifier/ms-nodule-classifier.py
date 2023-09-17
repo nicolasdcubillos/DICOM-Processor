@@ -17,6 +17,7 @@ Original file is located at
 #pip install sklearn
 #pip install torch torchvision torchaudio -f https://download.pytorch.org/whl/cu111/torch_stable.html
 #pip install flask
+#pip install pyyaml
 
 import sys
 import os
@@ -30,6 +31,7 @@ import numpy as np
 import csv
 import pandas as pd
 import traceback
+import yaml
 from PIL import Image
 from itertools import chain
 from sklearn import metrics
@@ -61,6 +63,19 @@ from matplotlib.patches import Patch
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 from sklearn.metrics import confusion_matrix, precision_recall_curve
 
+def load_config(config_file):
+    try:
+        with open(config_file, 'r') as archivo:
+            config = yaml.safe_load(archivo)
+        return config
+    except FileNotFoundError:
+        print(f"El archivo de configuración '{config_file}' no fue encontrado.")
+        return {}
+    except Exception as e:
+        print(f"Error al cargar la configuración desde '{config_file}': {str(e)}")
+        return {}
+    
+config = load_config('config.yml')
 """## Load PTH
 We previolusly obtained each PTH(weights) from a training process. Now it is neccesary to adquire the embeddings
 """
@@ -69,10 +84,8 @@ We previolusly obtained each PTH(weights) from a training process. Now it is nec
 #drive.mount('/content/drive')
 print(T.cuda.is_available())
 root = os.getcwd()
-print(root)
 
-#weight_paths = "/content/drive/MyDrive/TG"
-weight_paths = "D:\JAVERIANA\TG\Modelo\Multi-attention-nodule-classification\Journal_SPIE_binary_Ind_Inferences\Journal_SPIE_1S_2H_binary_kfold_fold_"
+weight_paths = config.get('weight_paths', '')
 fold_weight_path = os.path.join(root, weight_paths, "Journal_SPIE_1S_2H_binary_kfold")
 fold_weight_path_0 = os.path.join(root, weight_paths, "Journal_SPIE_1S_2H_binary_kfold_fold_0.pth")
 fold_weight_path_1 = os.path.join(root, weight_paths, "Journal_SPIE_1S_2H_binary_kfold_fold_1.pth")
@@ -285,7 +298,7 @@ But, if we want to load the PTH, we need to do certain steps, such as load the d
 
 """
 
-LIDC_path = "D:\JAVERIANA\TG\Modelo\LIDC-IDRI_images_npy_3d_HU"
+LIDC_path = config.get('LIDC_path', '')
 #LIDC_path = "/home/Data/Datasets/Pulmonary_nodules/LIDC_IDRI/LIDC-IDRI_images_npy_3d_HU"
 print(len(os.listdir(LIDC_path)))
 min_val = 90000
@@ -416,10 +429,6 @@ for c, row in enumerate(X_train):
 
 print("x: ",x.shape)
 print("y: ",y.shape)
-# D:\JAVERIANA\TG\Modelo\Multi-attention-nodule-classification\Journal_SPIE_binary_Ind_Inferences/LIDC-IDRI_images_npy_3d_HU/LICD-0099_NI002
-
-path = "D:\JAVERIANA\TG\Modelo\LIDC-IDRI_images_npy_3d_HU\LICD-0099_NI002"
-os.listdir(path)
 
 print("          Train          ")
 print("1", list(y_train).count(1))
@@ -493,8 +502,7 @@ def get_dataset(LIDC_path):
             elif((im.shape[0] < width+nodule_size) or (im.shape[1] < width+nodule_size)): im = cv.resize(im, (32, 32))
             else: im = im[width-nodule_size:width+nodule_size, width-nodule_size:width+nodule_size]
 
-#             print(patient.malignancy)
-            print('patient malignancy', patient.malignancy)
+#            print(patient.malignancy)
             x[c, 0, i, :, :] = T.from_numpy(np.array(im).astype(np.float32))
             if(int(patient.malignancy) == 1): y[c, 0:] = 0
             if(int(patient.malignancy) == 2): y[c, 0:] = 1
@@ -747,16 +755,15 @@ def noduleclassification():
 
         numpy_array = np.array(data['dicom'])
         filename = data['filename']
-
-        LIDC_path_test = "D:\JAVERIANA\TG\Modelo\LIDC-IDRI_images_npy_3d_HU_TEST"
+        LIDC_path_prod = config.get('LIDC_path_prod', '')
         
-        create_csv(len(numpy_array), filename, LIDC_path_test)
+        create_csv(len(numpy_array), filename, LIDC_path_prod)
         print(len(numpy_array))
         for frame in 0, len(numpy_array) - 1:
-            print(numpy_array)
-            save_npy(LIDC_path_test, filename, frame, numpy_array[frame])
+            #print(numpy_array)
+            save_npy(LIDC_path_prod, filename, frame, numpy_array[frame])
         
-        prediction_, class_ =  kfold(LIDC_path_test,
+        prediction_, class_ =  kfold(LIDC_path_prod,
                                     376,
                                     name='binary_Indeterminate_values',
                                     device='cpu',
@@ -770,7 +777,7 @@ def noduleclassification():
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
 
 if __name__ == '__main__':
-    app.run(port=4250)
+    app.run(port=config.get('port', 4250))
 
 #np.save("Prediction_binary_indeterminate.npy", prediction_[0])
 

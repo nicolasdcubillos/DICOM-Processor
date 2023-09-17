@@ -2,22 +2,36 @@ import pydicom
 import numpy as np
 import os
 import sys
+import yaml
 
 class DicomProcessor:
+    
     def __init__(self):
-        self.width = 32
-        self.height = 32
-        self.depth = 5
-        self.OUTPUT_PATH = 'D:\JAVERIANA\TG\DICOM-Processor\lib-dicom-slicer\OUTPUT'
+        self.config = self.load_config('config.yml')
+        self.width = self.config.get('width', 32)
+        self.height = self.config.get('height', 32)
+        self.depth = self.config.get('depth', 5)
+        self.OUTPUT_PATH = self.config.get('OUTPUT_PATH', '')
         self.FILENAME = ''
-        # Configuración temporal, cambiar para leer desde archivo properties o similar
         self.x_start = 0
         self.y_start = 0
         self.z_start = 0
-        self.debug = False
+        self.debug = self.config.get('debug', False)
         self.dataset = None
         self.numpy_array = None
 
+    def load_config(self, config_file):
+        try:
+            with open(config_file, 'r') as archivo:
+                config = yaml.safe_load(archivo)
+            return config
+        except FileNotFoundError:
+            print(f"El archivo de configuración '{config_file}' no fue encontrado.")
+            return {}
+        except Exception as e:
+            print(f"Error al cargar la configuración desde '{config_file}': {str(e)}")
+            return {}
+        
     def open_dicom(self):
         self.dataset = pydicom.dcmread(self.FILENAME)
         self.numpy_array = self.dataset.pixel_array
@@ -40,8 +54,9 @@ class DicomProcessor:
         foldername = os.path.splitext(os.path.basename(self.FILENAME))[0]
         filename = foldername + "_" + str(frame) + ".npy"
         folder_path = os.path.join(self.OUTPUT_PATH, foldername)
-        print('folder_path: ', folder_path)
-        print('filename: ', filename)
+        if self.debug:
+            print('folder_path: ', folder_path)
+            print('filename: ', filename)
 
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
