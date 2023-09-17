@@ -66,7 +66,7 @@ if __name__ == "__main__":
         print("Usage: python dicom_processor.py DICOM_FILE.DCM x y z")
     else:
         dicom_processor.FILENAME = sys.argv[1]
-        dicom_processor.x_start = sys.argv[2]
-        dicom_processor.y_start = sys.argv[3]
-        dicom_processor.z_start = sys.argv[4]
+        dicom_processor.x_start = int(sys.argv[2])
+        dicom_processor.y_start = int(sys.argv[3])
+        dicom_processor.z_start = int(sys.argv[4])
         dicom_processor.start()
