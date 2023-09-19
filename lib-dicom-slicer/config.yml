@@ -1,3 +1,4 @@
+port: 5000
 OUTPUT_PATH: 'D:\JAVERIANA\TG\DICOM-Processor\lib-dicom-slicer\OUTPUT'
 width: 32
 height: 32

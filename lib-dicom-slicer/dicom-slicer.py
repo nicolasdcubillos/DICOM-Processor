@@ -3,6 +3,8 @@ import numpy as np
 import os
 import sys
 import yaml
+from flask import Flask, request, jsonify
+import sys
 
 class DicomProcessor:
     
@@ -78,15 +80,33 @@ class DicomProcessor:
     def start(self):
         self.open_dicom()
         self.cut_dicom()
+        
+# Servicio flask
 
-if __name__ == "__main__":
-    dicom_processor = DicomProcessor()
+app = Flask(__name__)
+dicom_processor = DicomProcessor()
 
-    if len(sys.argv) != 5:
-        print("Usage: python dicom_processor.py DICOM_FILE.DCM x y z")
-    else:
-        dicom_processor.FILENAME = sys.argv[1]
-        dicom_processor.x_start = int(sys.argv[2])
-        dicom_processor.y_start = int(sys.argv[3])
-        dicom_processor.z_start = int(sys.argv[4])
-        dicom_processor.start()
+@app.route('/slice', methods=['POST'])
+def process_slice():
+    global dicom_processor
+
+    if not dicom_processor:
+        dicom_processor = DicomProcessor()
+
+    data = request.get_json()
+
+    if 'filename' not in data or 'x_start' not in data or 'y_start' not in data or 'z_start' not in data:
+        return jsonify({'error': 'Los datos en el cuerpo de la solicitud son incorrectos'}), 400
+
+    dicom_processor.FILENAME = data['filename']
+    dicom_processor.x_start = int(data['x_start'])
+    dicom_processor.y_start = int(data['y_start'])
+    dicom_processor.z_start = int(data['z_start'])
+
+    dicom_processor.start()
+
+    return jsonify({'message': 'Procesamiento completado'}), 200
+
+if __name__ == '__main__':
+    dicom_processor.config = dicom_processor.load_config('config.yml')
+    app.run(port = dicom_processor.config.get('port', 5000))
