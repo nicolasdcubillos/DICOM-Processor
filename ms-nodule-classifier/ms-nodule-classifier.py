@@ -34,6 +34,8 @@ import traceback
 import yaml
 import uuid
 import shutil
+import tarfile
+import re
 from PIL import Image
 from itertools import chain
 from sklearn import metrics
@@ -736,6 +738,7 @@ def create_csv(frames, folder, output_path):
 def save_npy(output_path, filename, frame, data):
     output_path += "/" + filename 
     filename += "_" + str(frame) + ".npy"
+    print ('filename crear:', filename)
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
@@ -744,7 +747,7 @@ def save_npy(output_path, filename, frame, data):
 
 app = Flask(__name__)
 
-def process_request(request):
+def process_request1(request):
     LIDC_path_prod = config.get('LIDC_path_prod', '')
     files = [request.files.get(f'dicom_{i}', None) for i in range(1, 6)]
     filename = str(uuid.uuid4())
@@ -763,6 +766,41 @@ def process_request(request):
         return filename
     else:
         return None
+    
+def process_request(request):
+    LIDC_path_prod = config.get('LIDC_path_prod', '')
+    tar_gz_file = request.files.get('file', None)
+    
+    if tar_gz_file is not None and tar_gz_file.filename.endswith('.tar.gz'):
+        tar_gz_bytes = tar_gz_file.read()
+        with tarfile.open(fileobj=io.BytesIO(tar_gz_bytes), mode='r:gz') as tar:
+            metadata_file = tar.extractfile('metadata')
+            if metadata_file is not None:
+                metadata_contents = metadata_file.read()
+                metadata_dict = dict(line.split(': ', 1) for line in metadata_contents.decode('utf-8').split('\n') if line)
+                uuid_value = metadata_dict.get('UUID', '')
+                uuid_value = re.sub(r'[\\/:*?"<>|]', '_', uuid_value)
+                uuid_value = uuid_value[:36]
+                #uuid_value = str(uuid.uuid4())
+                output_path = LIDC_path_prod + "\\" + uuid_value
+                print('output_path-', output_path, '-')
+                
+                if not os.path.exists(output_path):
+                    os.makedirs(output_path)
+                
+                print ('aaca')
+                
+                frames = metadata_dict.get('NumberOfFrames', 5)
+                    
+                for member in tar.getmembers():
+                    if member.name != 'metadata':
+                        tar.extract(member, path=output_path)
+                        
+                #tar.extractall(path=output_path)
+                create_csv(frames, uuid_value, LIDC_path_prod) 
+                return uuid_value
+    
+    return None
     
 def end_request(filename):
     path = os.path.join(config.get('LIDC_path_prod', ''), filename)

@@ -4,3 +4,7 @@ width: 32
 height: 32
 depth: 5
 debug: False
+circle_radius: 10
+circule_width: 2
+compress_level: 5
+gz_compression: True
