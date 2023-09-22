@@ -11,8 +11,8 @@ public class RegistroDTO {
 
     private Integer id;
     private LocalDate fecha;
+    private String uuid;
     private Integer usuario;
     private Integer tipoRegistro;
-    private Integer imagenTacid;
 
 }

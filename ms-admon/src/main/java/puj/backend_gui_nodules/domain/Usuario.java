@@ -40,7 +40,7 @@ public class Usuario {
     @Column
     private String telefono;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_usuario_id")
     private TipoUsuario tipoUsuario;
 

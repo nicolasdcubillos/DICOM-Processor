@@ -26,16 +26,15 @@ public class Registro {
     @Column
     private LocalDate fecha;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column
+    private String uuid;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_registro_id")
     private TipoRegistro tipoRegistro;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "imagen_tacid_id")
-    private ImagenTac imagenTacid;
 
 }
