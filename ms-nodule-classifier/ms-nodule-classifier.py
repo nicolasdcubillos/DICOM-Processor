@@ -815,7 +815,8 @@ def upload_npy():
                                         deterministic=True,
                                         dataset_func=get_dataset)
             end_request(filename)
-            return str(list(prediction_[0]))
+            print(prediction_)
+            return str(prediction_[0][0][0][0].item())
         else:
             return "No se envió ningún archivo .npy en la solicitud.", 400
     except Exception as e:
