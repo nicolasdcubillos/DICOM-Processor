@@ -4,6 +4,7 @@ import os
 import sys
 import yaml
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import sys
 import traceback
 import uuid
@@ -161,6 +162,7 @@ class DicomProcessor:
 # Servicio flask
 
 app = Flask(__name__)
+CORS(app)
 dicom_processor = DicomProcessor()
 
 @app.route('/slice', methods=['POST'])
