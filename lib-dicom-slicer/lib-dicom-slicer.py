@@ -14,6 +14,7 @@ import io
 import base64
 import gzip
 import shutil
+import tempfile
 
 class DicomProcessor:
     
@@ -163,25 +164,27 @@ app = Flask(__name__)
 dicom_processor = DicomProcessor()
 
 @app.route('/slice', methods=['POST'])
-def process_slice():
+def slice():
     try:
         global dicom_processor
 
         if not dicom_processor:
             dicom_processor = DicomProcessor()
+        
+        dicom_file = request.files.get('file', None)
 
-        data = request.get_json()
+        if dicom_file is None:
+            return jsonify({'error': 'El archivo DICOM no se ha proporcionado'}), 400
 
-        if 'path' not in data or 'x' not in data or 'y' not in data or 'z' not in data:
-            return jsonify({'error': 'Los datos en el cuerpo de la solicitud son incorrectos'}), 400
-
-        dicom_processor.filename = data['path']
-        dicom_processor.x_start = int(data['x'])
-        dicom_processor.y_start = int(data['y'])
-        dicom_processor.z_start = int(data['z'])
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        dicom_file.save(temp_file.name)
+        dicom_processor.filename = temp_file.name
+        dicom_processor.x_start = int(request.form.get('x'))
+        dicom_processor.y_start = int(request.form.get('y'))
+        dicom_processor.z_start = int(request.form.get('z'))       
 
         dicom_processor.start()
-
+        
         return jsonify({'message': dicom_processor.UUID}), 200
     except Exception as e:
         traceback_str = traceback.format_exc()
