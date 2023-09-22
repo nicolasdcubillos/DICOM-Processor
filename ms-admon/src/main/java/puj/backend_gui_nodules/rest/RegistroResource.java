@@ -1,5 +1,6 @@
 package puj.backend_gui_nodules.rest;
 
+import puj.backend_gui_nodules.model.RegistroCompleteDTO;
 import puj.backend_gui_nodules.model.RegistroDTO;
 import puj.backend_gui_nodules.service.RegistroService;
 import jakarta.validation.Valid;
@@ -28,13 +29,18 @@ public class RegistroResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<RegistroDTO>> getAllRegistros() {
+    public ResponseEntity<List<RegistroCompleteDTO>> getAllRegistros() {
         return ResponseEntity.ok(registroService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RegistroDTO> getRegistro(@PathVariable final Integer id) {
         return ResponseEntity.ok(registroService.get(id));
+    }
+
+    @GetMapping("/byUuid/{uuid}")
+    public ResponseEntity<RegistroCompleteDTO> getRegistroByUuid(@PathVariable final String uuid) {
+        return ResponseEntity.ok(registroService.getByUuid(uuid));
     }
 
     @PostMapping
