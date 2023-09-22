@@ -32,6 +32,7 @@ class DicomProcessor:
         self.numpy_array = None
         self.UUID = None
         self.folder_path = None
+        self.output_frames = None
 
     def load_config(self, config_file):
         try:
@@ -74,6 +75,7 @@ class DicomProcessor:
                 recorte = self.numpy_array[z, y_min:y_max, x_min:x_max]
                 self.save_npy(indice, recorte)
                 indice += 1
+            self.output_frames = indice
                 
     def load_folder(self):
         self.folder_path = os.path.join(self.OUTPUT_PATH, self.UUID)
@@ -129,7 +131,7 @@ class DicomProcessor:
         metadata['UUID'] = self.UUID
         metadata['PatientName'] = self.dataset.PatientName
         metadata['StudyDescription'] = self.dataset.StudyDescription
-        metadata['Frames'] = self.dataset.NumberOfFrames
+        metadata['Frames'] = self.output_frames
         metadata['Preview'] = self.image_to_base64()
         # Agregar otros metadatos que desees extraer
 

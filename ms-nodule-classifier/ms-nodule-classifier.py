@@ -781,14 +781,10 @@ def process_request(request):
                 uuid_value = metadata_dict.get('UUID', '')
                 uuid_value = re.sub(r'[\\/:*?"<>|]', '_', uuid_value)
                 uuid_value = uuid_value[:36]
-                #uuid_value = str(uuid.uuid4())
                 output_path = LIDC_path_prod + "\\" + uuid_value
-                print('output_path-', output_path, '-')
                 
                 if not os.path.exists(output_path):
                     os.makedirs(output_path)
-                
-                print ('aaca')
                 
                 frames = metadata_dict.get('NumberOfFrames', 5)
                     
@@ -796,7 +792,6 @@ def process_request(request):
                     if member.name != 'metadata':
                         tar.extract(member, path=output_path)
                         
-                #tar.extractall(path=output_path)
                 create_csv(frames, uuid_value, LIDC_path_prod) 
                 return uuid_value
     
