@@ -22,10 +22,10 @@ spring:
           filters:
             - StripPrefix=1
 
-        - id: route-ms-portal
+        - id: route-ms-admon
           uri: http://localhost:8081/
           predicates:
-            - Path=/ms-portal/**
+            - Path=/ms-admon/**
           filters:
             - StripPrefix=1
 
