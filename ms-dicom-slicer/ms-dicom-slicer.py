@@ -16,6 +16,7 @@ import base64
 import gzip
 import shutil
 import tempfile
+import boto3
 
 class DicomProcessor:
     
@@ -35,6 +36,7 @@ class DicomProcessor:
         self.UUID = None
         self.folder_path = None
         self.output_frames = None
+        session = boto3.Session(aws_access_key_id=self.config.get('AWS_ACCESS_KEY_ID', ''), aws_secret_access_key=self.config.get('AWS_SECRET_ACCESS_KEY', ''))
 
     def load_config(self, config_file):
         try:
@@ -145,12 +147,20 @@ class DicomProcessor:
                 
     def gz_compression(self):
         files = [f for f in os.listdir(self.folder_path) if os.path.isfile(os.path.join(self.folder_path, f))]
-        output_gz_file = os.path.join(self.OUTPUT_PATH, self.UUID + '.tar.gz')
+        filename = self.UUID + '.tar.gz'
+        output_gz_file = os.path.join(self.OUTPUT_PATH, filename)
         with tarfile.open(output_gz_file, 'w:gz') as tar_gz:
             for file in files:
                 input_file_path = os.path.join(self.folder_path, file)
                 tar_gz.add(input_file_path, arcname=file)
 
+        with open(output_gz_file, 'rb') as file:
+            self.session.put_object(
+            Bucket = self.config.get('S3_BUCKET_NAME', ''),
+            Key = filename,
+            Body = file
+            )
+        
     def start(self):
         self.open_dicom()
         self.load_folder() # Preparar la carpeta para guardar salida
