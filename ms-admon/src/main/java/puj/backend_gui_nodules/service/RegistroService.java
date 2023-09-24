@@ -80,7 +80,7 @@ public class RegistroService {
         registroDTO.setUuid(registro.getUuid());
         registroDTO.setNombrePaciente(registro.getNombrePaciente());
         registroDTO.setNombreEstudio(registro.getNombreEstudio());
-        registroDTO.setImagenPrevia(Base64.getDecoder().decode(registro.getImagenPrevia()));
+        registroDTO.setImagenPrevia(registro.getImagenPrevia());
         registroDTO.setUsuario(registro.getUsuario() == null ? null : registro.getUsuario().getId());
         registroDTO.setTipoRegistro(registro.getTipoRegistro() == null ? null : registro.getTipoRegistro().getId());
         return registroDTO;
