@@ -15,9 +15,13 @@ Original file is located at
 #pip install opencv-python
 #pip install pandas
 #pip install sklearn
+#pip install scikit-learn
 #pip install torch torchvision torchaudio -f https://download.pytorch.org/whl/cu111/torch_stable.html
 #pip install flask
 #pip install pyyaml
+#pip install matplotlib
+#pip install torchsummary
+#pip install seaborn
 
 import sys
 import os
@@ -781,14 +785,10 @@ def process_request(request):
                 uuid_value = metadata_dict.get('UUID', '')
                 uuid_value = re.sub(r'[\\/:*?"<>|]', '_', uuid_value)
                 uuid_value = uuid_value[:36]
-                #uuid_value = str(uuid.uuid4())
                 output_path = LIDC_path_prod + "\\" + uuid_value
-                print('output_path-', output_path, '-')
                 
                 if not os.path.exists(output_path):
                     os.makedirs(output_path)
-                
-                print ('aaca')
                 
                 frames = metadata_dict.get('NumberOfFrames', 5)
                     
@@ -796,7 +796,6 @@ def process_request(request):
                     if member.name != 'metadata':
                         tar.extract(member, path=output_path)
                         
-                #tar.extractall(path=output_path)
                 create_csv(frames, uuid_value, LIDC_path_prod) 
                 return uuid_value
     
@@ -820,7 +819,8 @@ def upload_npy():
                                         deterministic=True,
                                         dataset_func=get_dataset)
             end_request(filename)
-            return str(list(prediction_[0]))
+            print(prediction_)
+            return str(prediction_[0][0][0][0].item())
         else:
             return "No se envió ningún archivo .npy en la solicitud.", 400
     except Exception as e:
@@ -828,7 +828,7 @@ def upload_npy():
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
 
 if __name__ == '__main__':
-    app.run(port=config.get('port', 4250))
+    app.run(host='0.0.0.0', port=config.get('port', 4250))
 
 #np.save("Prediction_binary_indeterminate.npy", prediction_[0])
 

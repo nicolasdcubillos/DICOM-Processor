@@ -1,0 +1,4 @@
+port: 4250
+LIDC_path_prod: '/home/jaimes.angello/LIDC-IDRI_images_npy_3d_PROD'
+weight_paths: '/home/jaimes.angello/LIDC-IDRI_images_npy_3d_HU/Journal_SPIE_1S_2H_binary_kfold_fold_'
+LIDC_path: '/home/jaimes.angello/LIDC-IDRI_images_npy_3d_HU'
