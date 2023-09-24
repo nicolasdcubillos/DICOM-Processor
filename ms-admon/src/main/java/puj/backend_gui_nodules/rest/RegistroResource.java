@@ -57,6 +57,12 @@ public class RegistroResource {
         return ResponseEntity.ok(id);
     }
 
+    @PutMapping("/updateStatus/{uuid}/{tipoRegistro}")
+    public ResponseEntity<Integer> updateStatusRegistro(@PathVariable final String uuid, @PathVariable final Integer tipoRegistro) {
+        registroService.updateStatus(uuid, tipoRegistro);
+        return ResponseEntity.ok(1);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRegistro(@PathVariable final Integer id) {
         registroService.delete(id);

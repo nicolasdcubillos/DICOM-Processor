@@ -63,6 +63,13 @@ public class RegistroService {
         registroRepository.save(registro);
     }
 
+    public void updateStatus(final String uuid, final Integer tipoRegistro) {
+        final Registro registro = registroRepository.findByUuid(uuid)
+                .orElseThrow(NotFoundException::new);
+        mapToEntityUpdateStatus(registro, tipoRegistro);
+        registroRepository.save(registro);
+    }
+
     public void delete(final Integer id) {
         registroRepository.deleteById(id);
     }
@@ -89,6 +96,13 @@ public class RegistroService {
         registroCompleteDTO.setUsuario(registro.getUsuario() == null ? null : registro.getUsuario());
         registroCompleteDTO.setTipoRegistro(registro.getTipoRegistro() == null ? null : registro.getTipoRegistro());
         return registroCompleteDTO;
+    }
+
+    private Registro mapToEntityUpdateStatus(final Registro registro, final Integer tipoRegistro) {
+        final TipoRegistro tipoRegistroObj = tipoRegistroRepository.findById(tipoRegistro)
+                .orElseThrow(() -> new NotFoundException("tipoRegistro not found"));
+        registro.setTipoRegistro(tipoRegistroObj);
+        return registro;
     }
 
     private Registro mapToEntity(final RegistroDTO registroDTO, final Registro registro) {
