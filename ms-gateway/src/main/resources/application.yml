@@ -30,16 +30,9 @@ spring:
             - StripPrefix=1
 
         - id: route-ms-dicom-slicer
-          uri: http://localhost:5000/
+          uri: https://ec2-54-162-19-169.compute-1.amazonaws.com/
           predicates:
             - Path=/ms-dicom-slicer/**
-          filters:
-            - StripPrefix=1
-
-        - id: route-sqs-queue
-          uri: http://localhost:5000/
-          predicates:
-            - Path=/sqs-queue/**
           filters:
             - StripPrefix=1
 server:
