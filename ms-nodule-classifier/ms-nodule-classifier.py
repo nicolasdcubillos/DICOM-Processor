@@ -15,9 +15,13 @@ Original file is located at
 #pip install opencv-python
 #pip install pandas
 #pip install sklearn
+#pip install scikit-learn
 #pip install torch torchvision torchaudio -f https://download.pytorch.org/whl/cu111/torch_stable.html
 #pip install flask
 #pip install pyyaml
+#pip install matplotlib
+#pip install torchsummary
+#pip install seaborn
 
 import sys
 import os
@@ -824,7 +828,7 @@ def upload_npy():
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
 
 if __name__ == '__main__':
-    app.run(port=config.get('port', 4250))
+    app.run(host='0.0.0.0', port=config.get('port', 4250))
 
 #np.save("Prediction_binary_indeterminate.npy", prediction_[0])
 

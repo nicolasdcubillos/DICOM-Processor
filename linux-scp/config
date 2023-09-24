@@ -1,0 +1,6 @@
+host pulm
+    Hostname 10.34.1.51
+    User jaimes.angello
+    Port 3022
+    LocalForward 127.0.0.1:8080 127.0.0.1:3389
+    LocalForward 127.0.0.1:4250 127.0.0.1:4250

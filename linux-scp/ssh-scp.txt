@@ -1,0 +1,3 @@
+scp -r D:\JAVERIANA\TG\DICOM-Processor\ms-nodule-classifier\ms-nodule-classifier.py pulm:/home/jaimes.angello/DICOM-Processor/ms-nodule-classifier
+scp -r D:\JAVERIANA\TG\Modelo\LIDC-IDRI_images_npy_3d_HU pulm:/home/jaimes.angello/LIDC-IDRI_images_npy_3d_HU
+scp -r D:\JAVERIANA\TG\Modelo\Multi-attention-nodule-classification\Journal_SPIE_binary_Ind_Inferences\Journal_SPIE_1S_2H_binary_kfold_fold_ pulm:/home/jaimes.angello/Journal_SPIE_1S_2H_binary_kfold_fold_
