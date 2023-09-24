@@ -10,7 +10,7 @@ import puj.backend_gui_nodules.repos.TipoRegistroRepository;
 import puj.backend_gui_nodules.repos.UsuarioRepository;
 import puj.backend_gui_nodules.util.NotFoundException;
 
-import java.util.Base64;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -106,7 +106,7 @@ public class RegistroService {
     }
 
     private Registro mapToEntity(final RegistroDTO registroDTO, final Registro registro) {
-        registro.setFecha(registroDTO.getFecha());
+        registro.setFecha(LocalDate.now());
         registro.setUuid(registroDTO.getUuid());
         registro.setNombrePaciente(registroDTO.getNombrePaciente());
         registro.setNombreEstudio(registroDTO.getNombreEstudio());
