@@ -9,6 +9,8 @@ import puj.backend_gui_nodules.repos.RegistroRepository;
 import puj.backend_gui_nodules.repos.TipoRegistroRepository;
 import puj.backend_gui_nodules.repos.UsuarioRepository;
 import puj.backend_gui_nodules.util.NotFoundException;
+
+import java.util.Base64;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -69,6 +71,9 @@ public class RegistroService {
         registroDTO.setId(registro.getId());
         registroDTO.setFecha(registro.getFecha());
         registroDTO.setUuid(registro.getUuid());
+        registroDTO.setNombrePaciente(registro.getNombrePaciente());
+        registroDTO.setNombreEstudio(registro.getNombreEstudio());
+        registroDTO.setImagenPrevia(Base64.getDecoder().decode(registro.getImagenPrevia()));
         registroDTO.setUsuario(registro.getUsuario() == null ? null : registro.getUsuario().getId());
         registroDTO.setTipoRegistro(registro.getTipoRegistro() == null ? null : registro.getTipoRegistro().getId());
         return registroDTO;
@@ -78,6 +83,9 @@ public class RegistroService {
         registroCompleteDTO.setId(registro.getId());
         registroCompleteDTO.setFecha(registro.getFecha());
         registroCompleteDTO.setUuid(registro.getUuid());
+        registroCompleteDTO.setNombrePaciente(registro.getNombrePaciente());
+        registroCompleteDTO.setNombreEstudio(registro.getNombreEstudio());
+        registroCompleteDTO.setImagenPrevia(registro.getImagenPrevia());
         registroCompleteDTO.setUsuario(registro.getUsuario() == null ? null : registro.getUsuario());
         registroCompleteDTO.setTipoRegistro(registro.getTipoRegistro() == null ? null : registro.getTipoRegistro());
         return registroCompleteDTO;
@@ -86,6 +94,9 @@ public class RegistroService {
     private Registro mapToEntity(final RegistroDTO registroDTO, final Registro registro) {
         registro.setFecha(registroDTO.getFecha());
         registro.setUuid(registroDTO.getUuid());
+        registro.setNombrePaciente(registroDTO.getNombrePaciente());
+        registro.setNombreEstudio(registroDTO.getNombreEstudio());
+        registro.setImagenPrevia(registroDTO.getImagenPrevia());
         final Usuario usuario = registroDTO.getUsuario() == null ? null : usuarioRepository.findById(registroDTO.getUsuario())
                 .orElseThrow(() -> new NotFoundException("usuario not found"));
         registro.setUsuario(usuario);

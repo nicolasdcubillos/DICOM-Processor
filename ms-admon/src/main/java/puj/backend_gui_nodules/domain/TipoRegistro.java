@@ -16,7 +16,6 @@ public class TipoRegistro {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true)

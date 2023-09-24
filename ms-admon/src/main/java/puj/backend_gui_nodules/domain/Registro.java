@@ -29,6 +29,15 @@ public class Registro {
     @Column
     private String uuid;
 
+    @Column
+    private String nombrePaciente;
+
+    @Column
+    private String nombreEstudio;
+
+    @Column
+    private byte[] imagenPrevia;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
