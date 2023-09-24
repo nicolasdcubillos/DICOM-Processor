@@ -23,7 +23,7 @@ spring:
             - StripPrefix=1
 
         - id: route-ms-admon
-          uri: http://localhost:8081/
+          uri: http://ec2-52-15-218-180.us-east-2.compute.amazonaws.com:8081/
           predicates:
             - Path=/ms-admon/**
           filters:
