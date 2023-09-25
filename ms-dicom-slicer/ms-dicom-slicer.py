@@ -188,10 +188,10 @@ class DicomProcessor:
 # Servicio flask
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 dicom_processor = DicomProcessor()
 
-@app.route('/slice', methods=['POST'])
+@app.route('/api-ms-dicom-slicer/slice', methods=['POST'])
 def slice():
     try:
         global dicom_processor
@@ -215,7 +215,18 @@ def slice():
         return jsonify({'message': dicom_processor.UUID}), 200
     except Exception as e:
         traceback_str = traceback.format_exc()
+        print(e)
+        print(traceback_str)
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
+
+@app.route('/', methods=['POST'])
+def index():
+    # Obtiene la ruta solicitada
+    requested_path = request.path
+    print(f"Se intentó acceder a la ruta: {requested_path}")
+    
+    # Devuelve una respuesta 404
+    return f'Página no encontrada: {requested_path}', 404
 
 if __name__ == '__main__':
     dicom_processor.config = dicom_processor.load_config('config.yml')
