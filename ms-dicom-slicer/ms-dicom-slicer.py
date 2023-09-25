@@ -30,9 +30,9 @@ class DicomProcessor:
     def __init__(self):
         self.config = load_config()
         self.params = get_params()
-        self.width = self.params.get('width', 32)
-        self.height = self.params.get('height', 32)
-        self.depth = self.params.get('depth', 5)
+        self.width = int(self.params.get('width', 32))
+        self.height = int(self.params.get('height', 32))
+        self.depth = int(self.params.get('depth', 5))
         self.OUTPUT_PATH = self.config.get('OUTPUT_PATH', '')
         self.filename = ''
         self.x_start = 0
@@ -110,9 +110,9 @@ class DicomProcessor:
         pixel_array = ds.pixel_array[self.z_start]
         image = Image.fromarray(pixel_array).convert("RGB")
         draw = ImageDraw.Draw(image)
-        circle_radius = self.params.get('circle_radius', 5)
+        circle_radius = int(self.params.get('circle_radius', 5))
         draw.ellipse((self.x_start - circle_radius, self.y_start - circle_radius,
-                    self.x_start + circle_radius, self.y_start + circle_radius), outline=self.params.get('circle_color', 'red'), width=self.params.get('circle_width', 3))
+                    self.x_start + circle_radius, self.y_start + circle_radius), outline=self.params.get('circle_color', 'red'), width=int(self.params.get('circle_width', 3)))
 
         buffered = io.BytesIO()
         image.save(buffered, format="PNG", compress_level=self.params.get('compress_level', 5))
