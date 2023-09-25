@@ -14,7 +14,7 @@ public class CorsConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("http://localhost:4200"); // Reemplaza esto con la URL de tu aplicación Angular
+        corsConfiguration.addAllowedOrigin("*"); // Reemplaza esto con la URL de tu aplicación Angular
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
 
