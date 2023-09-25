@@ -57,6 +57,7 @@ public class ParametroService {
         parametroDTO.setId(parametro.getId());
         parametroDTO.setParametro(parametro.getParametro());
         parametroDTO.setValor(parametro.getValor());
+        parametroDTO.setDescripcion(parametro.getDescripcion());
         parametroDTO.setUsuarioModifica(parametro.getUsuarioModifica() == null ? null : parametro.getUsuarioModifica().getId());
         return parametroDTO;
     }
@@ -64,6 +65,7 @@ public class ParametroService {
     private Parametro mapToEntity(final ParametroDTO parametroDTO, final Parametro parametro) {
         parametro.setParametro(parametroDTO.getParametro());
         parametro.setValor(parametroDTO.getValor());
+        parametro.setDescripcion(parametroDTO.getDescripcion());
         final Usuario usuarioModifica = parametroDTO.getUsuarioModifica() == null ? null : usuarioRepository.findById(parametroDTO.getUsuarioModifica())
                 .orElseThrow(() -> new NotFoundException("usuarioModifica not found"));
         parametro.setUsuarioModifica(usuarioModifica);

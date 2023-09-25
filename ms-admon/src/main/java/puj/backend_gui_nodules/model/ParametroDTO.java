@@ -17,6 +17,9 @@ public class ParametroDTO {
     @Size(max = 255)
     private String valor;
 
+    @Size(max = 255)
+    private String descripcion;
+
     private Integer usuarioModifica;
 
 }

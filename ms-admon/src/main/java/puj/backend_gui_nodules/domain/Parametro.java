@@ -28,6 +28,9 @@ public class Parametro {
     @Column
     private String valor;
 
+    @Column
+    private String descripcion;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_modifica_id")
     private Usuario usuarioModifica;
