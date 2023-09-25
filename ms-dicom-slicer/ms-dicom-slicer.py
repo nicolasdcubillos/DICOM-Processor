@@ -215,6 +215,8 @@ def slice():
         return jsonify({'message': dicom_processor.UUID}), 200
     except Exception as e:
         traceback_str = traceback.format_exc()
+        print(e)
+        print(traceback_str)
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
 
 if __name__ == '__main__':
