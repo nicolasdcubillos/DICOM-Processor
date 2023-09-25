@@ -35,6 +35,5 @@ spring:
             - Path=/ms-dicom-slicer/**
           filters:
             - StripPrefix=1
-            - AddResponseHeader=Access-Control-Allow-Origin, *
 server:
   port: 9000
