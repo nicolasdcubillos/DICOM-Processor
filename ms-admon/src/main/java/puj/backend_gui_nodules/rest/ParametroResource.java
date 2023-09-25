@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/api/parametros", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api-ms-admon/parametros", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ParametroResource {
 
     private final ParametroService parametroService;

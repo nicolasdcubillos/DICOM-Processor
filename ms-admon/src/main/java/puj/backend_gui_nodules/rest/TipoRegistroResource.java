@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/api/tipoRegistros")
+@RequestMapping(value = "/api-ms-admon/tipoRegistros")
 public class TipoRegistroResource {
 
     private final TipoRegistroService tipoRegistroService;

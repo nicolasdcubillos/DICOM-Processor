@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/api/tipoUsuarios", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api-ms-admon/tipoUsuarios", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TipoUsuarioResource {
 
     private final TipoUsuarioService tipoUsuarioService;
