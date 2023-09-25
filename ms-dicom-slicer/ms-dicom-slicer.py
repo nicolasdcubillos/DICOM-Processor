@@ -191,7 +191,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 dicom_processor = DicomProcessor()
 
-@app.route('/api-dicom-slicer/slice', methods=['POST'])
+@app.route('/api-ms-dicom-slicer/slice', methods=['POST'])
 def slice():
     try:
         global dicom_processor
