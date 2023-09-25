@@ -226,7 +226,7 @@ def index():
     print(f"Se intentó acceder a la ruta: {requested_path}")
     
     # Devuelve una respuesta 404
-    return 'Página no encontrada', 404
+    return f'Página no encontrada: {requested_path}', 404
 
 if __name__ == '__main__':
     dicom_processor.config = dicom_processor.load_config('config.yml')
