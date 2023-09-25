@@ -1,0 +1,2 @@
+run-server:
+    nohup gunicorn -w 5 -b 0.0.0.0:5000 ms-dicom-slicer:app --log-level=debug > server.log 2>&1 &
