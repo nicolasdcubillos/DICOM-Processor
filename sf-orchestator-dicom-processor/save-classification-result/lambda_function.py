@@ -10,7 +10,7 @@ def lambda_handler(event, context):
         resultClassification = event[1]["body"]
         resultDicomRegistry = event[0]["body"]
         uuid = resultDicomRegistry.split("\n")[0].split(":")[1].strip()
-        url = f"{gateway_url}/ms-admon/api/registros/updateStatus/{uuid}/{resultClassification}"
+        url = f"{gateway_url}/api-ms-admon/registros/updateStatus/{uuid}/{resultClassification}"
         headers = {"Content-Type": "application/json"}
         response = requests.put(url, headers=headers)
         

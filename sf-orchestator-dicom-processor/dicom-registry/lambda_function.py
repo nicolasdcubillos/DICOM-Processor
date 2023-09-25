@@ -33,7 +33,7 @@ def lambda_handler(event, context):
                     elif linea.startswith("StudyDescription: "):
                         payload["nombreEstudio"] = linea.replace("StudyDescription: ", "")
                 
-                url = f"{gateway_url}/ms-admon/api/registros"
+                url = f"{gateway_url}/api-ms-admon/registros"
                 headers = {"Content-Type": "application/json"}
                 response = requests.post(url, json=payload, headers=headers)
                 
