@@ -8,7 +8,6 @@ sys.path.append(packages_folder)
 
 import pydicom
 import numpy as np
-import yaml
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
@@ -21,12 +20,15 @@ import io
 import base64
 import tempfile
 import boto3
+
+# Local imports
 from parameter_repository import get_params
+from yml_config_loader import load_config
 
 class DicomProcessor:
     
     def __init__(self):
-        self.config = self.load_config('config.yml')
+        self.config = load_config()
         self.params = get_params()
         self.width = self.params.get('width', 32)
         self.height = self.params.get('height', 32)
@@ -47,18 +49,6 @@ class DicomProcessor:
         self.gz_filename = None
         self.session = boto3.Session(aws_access_key_id=self.config.get('AWS_ACCESS_KEY_ID', ''), aws_secret_access_key=self.config.get('AWS_SECRET_ACCESS_KEY', ''))
 
-    def load_config(self, config_file):
-        try:
-            with open(config_file, 'r') as archivo:
-                config = yaml.safe_load(archivo)
-            return config
-        except FileNotFoundError:
-            print(f"El archivo de configuración '{config_file}' no fue encontrado.")
-            return {}
-        except Exception as e:
-            print(f"Error al cargar la configuración desde '{config_file}': {str(e)}")
-            return {}
-        
     def open_dicom(self):
         self.UUID = str(uuid.uuid4())
         self.dataset = pydicom.dcmread(self.filename)

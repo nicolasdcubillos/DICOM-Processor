@@ -1,21 +1,20 @@
 import mysql.connector
+from yml_config_loader import load_config
 
 # Configura las credenciales
-host = "database-1.cbtbx79jvpr1.us-east-2.rds.amazonaws.com"
-username = "admin"
-password = "trabajogrado"
-database = "backend_gui_nodules"
+
 
 def get_params():
     params = {}  # Crea un diccionario vacío para almacenar los resultados
 
     try:
-        # Establece la conexión a la base de datos
+        config = load_config()
+        
         connection = mysql.connector.connect(
-            host=host,
-            user=username,
-            password=password,
-            database=database
+            host = config.get('DATABASE_HOST', ''),
+            user = config.get('DATABASE_USERNAME', ''),
+            password = config.get('DATABASE_PASSWORD', ''),
+            database = config.get('DATABASE_SCHEMA', '')
         )
 
         if connection.is_connected():
