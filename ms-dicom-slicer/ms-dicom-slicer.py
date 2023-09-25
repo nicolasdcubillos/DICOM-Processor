@@ -19,27 +19,25 @@ from PIL import Image, ImageDraw
 import os
 import io
 import base64
-import gzip
-import shutil
 import tempfile
 import boto3
-import asyncio
-import aioboto3
-import aiofiles
+from parameter_repository import get_params
 
 class DicomProcessor:
     
     def __init__(self):
         self.config = self.load_config('config.yml')
-        self.width = self.config.get('width', 32)
-        self.height = self.config.get('height', 32)
-        self.depth = self.config.get('depth', 5)
+        self.params = get_params()
+        self.width = self.params.get('width', 32)
+        self.height = self.params.get('height', 32)
+        self.depth = self.params.get('depth', 5)
         self.OUTPUT_PATH = self.config.get('OUTPUT_PATH', '')
         self.filename = ''
         self.x_start = 0
         self.y_start = 0
         self.z_start = 0
-        self.debug = self.config.get('debug', False)
+        self.debug = self.params.get('debug', False)
+        self.params = None
         self.dataset = None
         self.numpy_array = None
         self.UUID = None
@@ -122,12 +120,12 @@ class DicomProcessor:
         pixel_array = ds.pixel_array[self.z_start]
         image = Image.fromarray(pixel_array).convert("RGB")
         draw = ImageDraw.Draw(image)
-        circle_radius = self.config.get('circle_radius', 5)
+        circle_radius = self.params.get('circle_radius', 5)
         draw.ellipse((self.x_start - circle_radius, self.y_start - circle_radius,
-                    self.x_start + circle_radius, self.y_start + circle_radius), outline='red', width=self.config.get('circle_width', 3))
+                    self.x_start + circle_radius, self.y_start + circle_radius), outline=self.params.get('circle_color', 'red'), width=self.params.get('circle_width', 3))
 
         buffered = io.BytesIO()
-        image.save(buffered, format="PNG", compress_level=self.config.get('compress_level', 5))
+        image.save(buffered, format="PNG", compress_level=self.params.get('compress_level', 5))
 
         base64_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
@@ -180,9 +178,9 @@ class DicomProcessor:
         self.load_folder() # Preparar la carpeta para guardar salida
         self.cut_dicom()
         self.save_metadata()
-        if self.config.get('gz_compression', True):
+        if self.params.get('gz_compression', True):
             self.gz_compression()
-            if self.config.get('send_S3', True):
+            if self.params.get('send_S3', True):
                 self.send_to_S3()
         
 # Servicio flask
@@ -199,6 +197,7 @@ def slice():
         if not dicom_processor:
             dicom_processor = DicomProcessor()
         
+        dicom_processor.params = get_params()
         dicom_file = request.files.get('file', None)
 
         if dicom_file is None:
@@ -221,11 +220,8 @@ def slice():
 
 @app.route('/', methods=['POST'])
 def index():
-    # Obtiene la ruta solicitada
     requested_path = request.path
     print(f"Se intentó acceder a la ruta: {requested_path}")
-    
-    # Devuelve una respuesta 404
     return f'Página no encontrada: {requested_path}', 404
 
 if __name__ == '__main__':
