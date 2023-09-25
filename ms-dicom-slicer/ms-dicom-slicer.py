@@ -219,6 +219,7 @@ def slice():
         print(traceback_str)
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
 
+@app.route('/', methods=['POST'])
 def index():
     # Obtiene la ruta solicitada
     requested_path = request.path
