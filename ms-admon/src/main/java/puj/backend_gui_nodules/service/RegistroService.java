@@ -11,6 +11,7 @@ import puj.backend_gui_nodules.repos.UsuarioRepository;
 import puj.backend_gui_nodules.util.NotFoundException;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -106,7 +107,8 @@ public class RegistroService {
     }
 
     private Registro mapToEntity(final RegistroDTO registroDTO, final Registro registro) {
-        registro.setFecha(LocalDate.now());
+        ZoneId zonaHorariaColombia = ZoneId.of("America/Bogota");
+        registro.setFecha(LocalDate.now(zonaHorariaColombia));
         registro.setUuid(registroDTO.getUuid());
         registro.setNombrePaciente(registroDTO.getNombrePaciente());
         registro.setNombreEstudio(registroDTO.getNombreEstudio());
