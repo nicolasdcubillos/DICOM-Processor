@@ -38,7 +38,6 @@ class DicomProcessor:
         self.x_start = 0
         self.y_start = 0
         self.z_start = 0
-        self.debug = self.params.get('debug', False)
         self.params = None
         self.dataset = None
         self.numpy_array = None
@@ -53,10 +52,6 @@ class DicomProcessor:
         self.UUID = str(uuid.uuid4())
         self.dataset = pydicom.dcmread(self.filename)
         self.numpy_array = self.dataset.pixel_array
-
-        if self.debug:
-            print("Frames:", self.dataset.NumberOfFrames)
-            self.print_pixel_array(self.numpy_array)
 
     def cut_dicom(self):
         if self.dataset.NumberOfFrames is None or self.dataset.NumberOfFrames == 0:
@@ -87,16 +82,9 @@ class DicomProcessor:
             
     def save_npy(self, frame, data):     
         filename = self.UUID + "_" + str(frame) + ".npy"
-        if self.debug:
-            print('folder_path: ', self.folder_path)
-            print('filename: ', filename)
 
         file_path = os.path.join(self.folder_path, filename)
         np.save(file_path, data)
-
-        if self.debug:
-            print(data)
-            print(f"Frame {frame} saved in '{file_path}'")
 
     @staticmethod
     def print_pixel_array(pixel_array):
