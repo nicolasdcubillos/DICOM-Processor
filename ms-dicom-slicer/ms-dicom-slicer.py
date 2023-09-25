@@ -115,7 +115,7 @@ class DicomProcessor:
                     self.x_start + circle_radius, self.y_start + circle_radius), outline=self.params.get('circle_color', 'red'), width=int(self.params.get('circle_width', 3)))
 
         buffered = io.BytesIO()
-        image.save(buffered, format="PNG", compress_level=self.params.get('compress_level', 5))
+        image.save(buffered, format="PNG", compress_level=int(self.params.get('compress_level', 5)))
 
         base64_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
