@@ -188,7 +188,7 @@ class DicomProcessor:
 # Servicio flask
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 dicom_processor = DicomProcessor()
 
 @app.route('/slice', methods=['POST'])
