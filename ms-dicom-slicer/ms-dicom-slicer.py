@@ -219,6 +219,14 @@ def slice():
         print(traceback_str)
         return jsonify({'error': str(e), 'traceback': traceback_str}), 500
 
+def index():
+    # Obtiene la ruta solicitada
+    requested_path = request.path
+    print(f"Se intentó acceder a la ruta: {requested_path}")
+    
+    # Devuelve una respuesta 404
+    return 'Página no encontrada', 404
+
 if __name__ == '__main__':
     dicom_processor.config = dicom_processor.load_config('config.yml')
     app.run(host = "0.0.0.0", port = dicom_processor.config.get('port', 5000))
