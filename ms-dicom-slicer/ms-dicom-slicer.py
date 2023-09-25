@@ -215,5 +215,4 @@ def index():
     return f'Página no encontrada: {requested_path}', 404
 
 if __name__ == '__main__':
-    dicom_processor.config = dicom_processor.load_config('config.yml')
     app.run(host = "0.0.0.0", port = dicom_processor.config.get('port', 5000))
