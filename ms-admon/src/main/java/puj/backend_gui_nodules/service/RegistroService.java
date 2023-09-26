@@ -33,7 +33,8 @@ public class RegistroService {
     }
 
     public List<RegistroCompleteDTO> findAll() {
-        final List<Registro> registros = registroRepository.findAll(Sort.by("id"));
+        Sort sort = Sort.by(Sort.Order.asc("seen"), Sort.Order.asc("id"));
+        final List<Registro> registros = registroRepository.findAll(sort);
         return registros.stream()
                 .map(registro -> mapToCompleteDTO(registro, new RegistroCompleteDTO()))
                 .toList();
@@ -61,6 +62,13 @@ public class RegistroService {
         final Registro registro = registroRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(registroDTO, registro);
+        registroRepository.save(registro);
+    }
+
+    public void updateSeenStatus(final String uuid, final Boolean seen) {
+        final Registro registro = registroRepository.findByUuid(uuid)
+                .orElseThrow(NotFoundException::new);
+        mapToEntityUpdateSeenStatus(registro, seen);
         registroRepository.save(registro);
     }
 
@@ -105,6 +113,11 @@ public class RegistroService {
         final TipoRegistro tipoRegistroObj = tipoRegistroRepository.findById(tipoRegistro)
                 .orElseThrow(() -> new NotFoundException("tipoRegistro not found"));
         registro.setTipoRegistro(tipoRegistroObj);
+        return registro;
+    }
+
+    private Registro mapToEntityUpdateSeenStatus(final Registro registro, final Boolean seen) {
+        registro.setSeen(seen);
         return registro;
     }
 
