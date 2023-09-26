@@ -15,6 +15,7 @@ public class RegistroDTO {
     private String uuid;
     private String nombrePaciente;
     private String nombreEstudio;
+    private Boolean seen;
     private byte[] imagenPrevia;
     private Integer usuario;
     private Integer tipoRegistro;

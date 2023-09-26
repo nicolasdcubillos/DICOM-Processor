@@ -38,6 +38,9 @@ public class Registro {
     @Column
     private byte[] imagenPrevia;
 
+    @Column
+    private Boolean seen;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;

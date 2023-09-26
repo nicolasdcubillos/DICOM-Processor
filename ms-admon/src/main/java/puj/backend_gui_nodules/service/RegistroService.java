@@ -81,6 +81,7 @@ public class RegistroService {
         registroDTO.setUuid(registro.getUuid());
         registroDTO.setNombrePaciente(registro.getNombrePaciente());
         registroDTO.setNombreEstudio(registro.getNombreEstudio());
+        registroDTO.setSeen(registro.getSeen());
         registroDTO.setImagenPrevia(registro.getImagenPrevia());
         registroDTO.setUsuario(registro.getUsuario() == null ? null : registro.getUsuario().getId());
         registroDTO.setTipoRegistro(registro.getTipoRegistro() == null ? null : registro.getTipoRegistro().getId());
@@ -93,6 +94,7 @@ public class RegistroService {
         registroCompleteDTO.setUuid(registro.getUuid());
         registroCompleteDTO.setNombrePaciente(registro.getNombrePaciente());
         registroCompleteDTO.setNombreEstudio(registro.getNombreEstudio());
+        registroCompleteDTO.setSeen(registro.getSeen());
         registroCompleteDTO.setImagenPrevia(registro.getImagenPrevia());
         registroCompleteDTO.setUsuario(registro.getUsuario() == null ? null : registro.getUsuario());
         registroCompleteDTO.setTipoRegistro(registro.getTipoRegistro() == null ? null : registro.getTipoRegistro());
@@ -112,6 +114,7 @@ public class RegistroService {
         registro.setUuid(registroDTO.getUuid());
         registro.setNombrePaciente(registroDTO.getNombrePaciente());
         registro.setNombreEstudio(registroDTO.getNombreEstudio());
+        registro.setSeen(registroDTO.getSeen());
         registro.setImagenPrevia(registroDTO.getImagenPrevia());
         final Usuario usuario = registroDTO.getUsuario() == null ? null : usuarioRepository.findById(registroDTO.getUsuario())
                 .orElseThrow(() -> new NotFoundException("usuario not found"));

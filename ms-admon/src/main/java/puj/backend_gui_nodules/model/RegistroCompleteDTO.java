@@ -15,6 +15,7 @@ public class RegistroCompleteDTO {
     private String uuid;
     private String nombrePaciente;
     private String nombreEstudio;
+    private Boolean seen;
     private byte[] imagenPrevia;
     private Usuario usuario;
     private TipoRegistro tipoRegistro;
