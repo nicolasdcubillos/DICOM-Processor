@@ -8,7 +8,6 @@ sys.path.append(packages_folder)
 
 import pydicom
 import numpy as np
-import yaml
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
@@ -19,27 +18,27 @@ from PIL import Image, ImageDraw
 import os
 import io
 import base64
-import gzip
-import shutil
 import tempfile
 import boto3
-import asyncio
-import aioboto3
-import aiofiles
+
+# Local imports
+from parameter_repository import get_params
+from yml_config_loader import load_config
 
 class DicomProcessor:
     
     def __init__(self):
-        self.config = self.load_config('config.yml')
-        self.width = self.config.get('width', 32)
-        self.height = self.config.get('height', 32)
-        self.depth = self.config.get('depth', 5)
+        self.config = load_config()
+        self.params = get_params()
+        self.width = int(self.params.get('width', 32))
+        self.height = int(self.params.get('height', 32))
+        self.depth = int(self.params.get('depth', 5))
         self.OUTPUT_PATH = self.config.get('OUTPUT_PATH', '')
         self.filename = ''
         self.x_start = 0
         self.y_start = 0
         self.z_start = 0
-        self.debug = self.config.get('debug', False)
+        self.params = None
         self.dataset = None
         self.numpy_array = None
         self.UUID = None
@@ -47,28 +46,12 @@ class DicomProcessor:
         self.output_frames = None
         self.output_gz_file = None
         self.gz_filename = None
-        self.session = boto3.Session(aws_access_key_id=self.config.get('AWS_ACCESS_KEY_ID', ''), aws_secret_access_key=self.config.get('AWS_SECRET_ACCESS_KEY', ''))
+        self.session = boto3.Session()
 
-    def load_config(self, config_file):
-        try:
-            with open(config_file, 'r') as archivo:
-                config = yaml.safe_load(archivo)
-            return config
-        except FileNotFoundError:
-            print(f"El archivo de configuración '{config_file}' no fue encontrado.")
-            return {}
-        except Exception as e:
-            print(f"Error al cargar la configuración desde '{config_file}': {str(e)}")
-            return {}
-        
     def open_dicom(self):
         self.UUID = str(uuid.uuid4())
         self.dataset = pydicom.dcmread(self.filename)
         self.numpy_array = self.dataset.pixel_array
-
-        if self.debug:
-            print("Frames:", self.dataset.NumberOfFrames)
-            self.print_pixel_array(self.numpy_array)
 
     def cut_dicom(self):
         if self.dataset.NumberOfFrames is None or self.dataset.NumberOfFrames == 0:
@@ -99,16 +82,9 @@ class DicomProcessor:
             
     def save_npy(self, frame, data):     
         filename = self.UUID + "_" + str(frame) + ".npy"
-        if self.debug:
-            print('folder_path: ', self.folder_path)
-            print('filename: ', filename)
 
         file_path = os.path.join(self.folder_path, filename)
         np.save(file_path, data)
-
-        if self.debug:
-            print(data)
-            print(f"Frame {frame} saved in '{file_path}'")
 
     @staticmethod
     def print_pixel_array(pixel_array):
@@ -122,12 +98,12 @@ class DicomProcessor:
         pixel_array = ds.pixel_array[self.z_start]
         image = Image.fromarray(pixel_array).convert("RGB")
         draw = ImageDraw.Draw(image)
-        circle_radius = self.config.get('circle_radius', 5)
+        circle_radius = int(self.params.get('circle_radius', 5))
         draw.ellipse((self.x_start - circle_radius, self.y_start - circle_radius,
-                    self.x_start + circle_radius, self.y_start + circle_radius), outline='red', width=self.config.get('circle_width', 3))
+                    self.x_start + circle_radius, self.y_start + circle_radius), outline=self.params.get('circle_color', 'red'), width=int(self.params.get('circle_width', 3)))
 
         buffered = io.BytesIO()
-        image.save(buffered, format="PNG", compress_level=self.config.get('compress_level', 5))
+        image.save(buffered, format="PNG", compress_level=int(self.params.get('compress_level', 5)))
 
         base64_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
@@ -180,9 +156,9 @@ class DicomProcessor:
         self.load_folder() # Preparar la carpeta para guardar salida
         self.cut_dicom()
         self.save_metadata()
-        if self.config.get('gz_compression', True):
+        if self.params.get('gz_compression', True):
             self.gz_compression()
-            if self.config.get('send_S3', True):
+            if self.params.get('send_S3', True):
                 self.send_to_S3()
         
 # Servicio flask
@@ -199,6 +175,7 @@ def slice():
         if not dicom_processor:
             dicom_processor = DicomProcessor()
         
+        dicom_processor.params = get_params()
         dicom_file = request.files.get('file', None)
 
         if dicom_file is None:
@@ -221,13 +198,9 @@ def slice():
 
 @app.route('/', methods=['POST'])
 def index():
-    # Obtiene la ruta solicitada
     requested_path = request.path
     print(f"Se intentó acceder a la ruta: {requested_path}")
-    
-    # Devuelve una respuesta 404
     return f'Página no encontrada: {requested_path}', 404
 
 if __name__ == '__main__':
-    dicom_processor.config = dicom_processor.load_config('config.yml')
     app.run(host = "0.0.0.0", port = dicom_processor.config.get('port', 5000))
