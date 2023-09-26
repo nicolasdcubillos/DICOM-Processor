@@ -46,7 +46,7 @@ class DicomProcessor:
         self.output_frames = None
         self.output_gz_file = None
         self.gz_filename = None
-        self.session = boto3.Session(aws_access_key_id=self.config.get('AWS_ACCESS_KEY_ID', ''), aws_secret_access_key=self.config.get('AWS_SECRET_ACCESS_KEY', ''))
+        self.session = boto3.Session()
 
     def open_dicom(self):
         self.UUID = str(uuid.uuid4())
