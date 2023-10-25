@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TipoRegistroDTO {
+public class RecordTypeDTO {
 
     private Integer id;
 

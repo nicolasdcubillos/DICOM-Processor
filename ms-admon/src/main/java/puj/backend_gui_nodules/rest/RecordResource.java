@@ -1,8 +1,8 @@
 package puj.backend_gui_nodules.rest;
 
-import puj.backend_gui_nodules.model.RegistroCompleteDTO;
-import puj.backend_gui_nodules.model.RegistroDTO;
-import puj.backend_gui_nodules.service.RegistroService;
+import puj.backend_gui_nodules.model.RecordCompleteDTO;
+import puj.backend_gui_nodules.model.RecordDTO;
+import puj.backend_gui_nodules.service.RecordService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -20,58 +20,58 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api-ms-admon/registros", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RegistroResource {
+public class RecordResource {
 
-    private final RegistroService registroService;
+    private final RecordService recordService;
 
-    public RegistroResource(final RegistroService registroService) {
-        this.registroService = registroService;
+    public RecordResource(final RecordService recordService) {
+        this.recordService = recordService;
     }
 
     @GetMapping
-    public ResponseEntity<List<RegistroCompleteDTO>> getAllRegistros() {
-        return ResponseEntity.ok(registroService.findAll());
+    public ResponseEntity<List<RecordCompleteDTO>> getAllRegistros() {
+        return ResponseEntity.ok(recordService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RegistroDTO> getRegistro(@PathVariable final Integer id) {
-        return ResponseEntity.ok(registroService.get(id));
+    public ResponseEntity<RecordDTO> getRegistro(@PathVariable final Integer id) {
+        return ResponseEntity.ok(recordService.get(id));
     }
 
     @GetMapping("/byUuid/{uuid}")
-    public ResponseEntity<RegistroCompleteDTO> getRegistroByUuid(@PathVariable final String uuid) {
-        return ResponseEntity.ok(registroService.getByUuid(uuid));
+    public ResponseEntity<RecordCompleteDTO> getRegistroByUuid(@PathVariable final String uuid) {
+        return ResponseEntity.ok(recordService.getByUuid(uuid));
     }
 
     @PostMapping
     public ResponseEntity<Integer> createRegistro(
-            @RequestBody @Valid final RegistroDTO registroDTO) {
-        final Integer createdId = registroService.create(registroDTO);
+            @RequestBody @Valid final RecordDTO recordDTO) {
+        final Integer createdId = recordService.create(recordDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Integer> updateRegistro(@PathVariable final Integer id,
-            @RequestBody @Valid final RegistroDTO registroDTO) {
-        registroService.update(id, registroDTO);
+            @RequestBody @Valid final RecordDTO recordDTO) {
+        recordService.update(id, recordDTO);
         return ResponseEntity.ok(id);
     }
 
     @PutMapping("/updateStatus/{uuid}/{tipoRegistro}")
     public ResponseEntity<Integer> updateStatusRegistro(@PathVariable final String uuid, @PathVariable final Integer tipoRegistro) {
-        registroService.updateStatus(uuid, tipoRegistro);
+        recordService.updateStatus(uuid, tipoRegistro);
         return ResponseEntity.ok(1);
     }
 
     @PutMapping("/updateSeenStatus/{uuid}/{seen}")
     public ResponseEntity<Integer> updateStatusRegistro(@PathVariable final String uuid, @PathVariable final Boolean seen) {
-        registroService.updateSeenStatus(uuid, seen);
+        recordService.updateSeenStatus(uuid, seen);
         return ResponseEntity.ok(1);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRegistro(@PathVariable final Integer id) {
-        registroService.delete(id);
+        recordService.delete(id);
         return ResponseEntity.noContent().build();
     }
 

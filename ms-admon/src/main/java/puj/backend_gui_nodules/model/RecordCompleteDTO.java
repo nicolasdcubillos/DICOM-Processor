@@ -2,21 +2,23 @@ package puj.backend_gui_nodules.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import puj.backend_gui_nodules.domain.TipoRegistro;
-import puj.backend_gui_nodules.domain.Usuario;
+import puj.backend_gui_nodules.domain.RecordType;
+import puj.backend_gui_nodules.domain.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
-public class RegistroCompleteDTO {
+public class RecordCompleteDTO {
 
     private Integer id;
-    private LocalDate fecha;
+    private LocalDateTime fecha;
     private String uuid;
     private String nombrePaciente;
     private String nombreEstudio;
     private Boolean seen;
     private byte[] imagenPrevia;
-    private Usuario usuario;
-    private TipoRegistro tipoRegistro;
+    private User user;
+    private RecordType recordType;
 }

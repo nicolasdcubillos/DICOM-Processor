@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ParametroDTO {
+public class ParameterDTO {
 
     private Integer id;
 

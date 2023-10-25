@@ -1,7 +1,7 @@
 package puj.backend_gui_nodules.rest;
 
-import puj.backend_gui_nodules.model.UsuarioDTO;
-import puj.backend_gui_nodules.service.UsuarioService;
+import puj.backend_gui_nodules.model.UserDTO;
+import puj.backend_gui_nodules.service.UserService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -19,40 +19,40 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api-ms-admon/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UsuarioResource {
+public class UserResource {
 
-    private final UsuarioService usuarioService;
+    private final UserService userService;
 
-    public UsuarioResource(final UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public UserResource(final UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> getAllUsuarios() {
-        return ResponseEntity.ok(usuarioService.findAll());
+    public ResponseEntity<List<UserDTO>> getAllUsuarios() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> getUsuario(@PathVariable final Integer id) {
-        return ResponseEntity.ok(usuarioService.get(id));
+    public ResponseEntity<UserDTO> getUsuario(@PathVariable final Integer id) {
+        return ResponseEntity.ok(userService.get(id));
     }
 
     @PostMapping
-    public ResponseEntity<Integer> createUsuario(@RequestBody @Valid final UsuarioDTO usuarioDTO) {
-        final Integer createdId = usuarioService.create(usuarioDTO);
+    public ResponseEntity<Integer> createUsuario(@RequestBody @Valid final UserDTO userDTO) {
+        final Integer createdId = userService.create(userDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Integer> updateUsuario(@PathVariable final Integer id,
-            @RequestBody @Valid final UsuarioDTO usuarioDTO) {
-        usuarioService.update(id, usuarioDTO);
+            @RequestBody @Valid final UserDTO userDTO) {
+        userService.update(id, userDTO);
         return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable final Integer id) {
-        usuarioService.delete(id);
+        userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 

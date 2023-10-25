@@ -1,7 +1,7 @@
 package puj.backend_gui_nodules.rest;
 
-import puj.backend_gui_nodules.model.TipoRegistroDTO;
-import puj.backend_gui_nodules.service.TipoRegistroService;
+import puj.backend_gui_nodules.model.RecordTypeDTO;
+import puj.backend_gui_nodules.service.RecordTypeService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -18,41 +18,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api-ms-admon/tipoRegistros")
-public class TipoRegistroResource {
+public class RecordTypeResource {
 
-    private final TipoRegistroService tipoRegistroService;
+    private final RecordTypeService recordTypeService;
 
-    public TipoRegistroResource(final TipoRegistroService tipoRegistroService) {
-        this.tipoRegistroService = tipoRegistroService;
+    public RecordTypeResource(final RecordTypeService recordTypeService) {
+        this.recordTypeService = recordTypeService;
     }
 
     @GetMapping
-    public ResponseEntity<List<TipoRegistroDTO>> getAllTipoRegistros() {
-        return ResponseEntity.ok(tipoRegistroService.findAll());
+    public ResponseEntity<List<RecordTypeDTO>> getAllTipoRegistros() {
+        return ResponseEntity.ok(recordTypeService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoRegistroDTO> getTipoRegistro(@PathVariable final Integer id) {
-        return ResponseEntity.ok(tipoRegistroService.get(id));
+    public ResponseEntity<RecordTypeDTO> getTipoRegistro(@PathVariable final Integer id) {
+        return ResponseEntity.ok(recordTypeService.get(id));
     }
 
     @PostMapping
     public ResponseEntity<Integer> createTipoRegistro(
-            @RequestBody @Valid final TipoRegistroDTO tipoRegistroDTO) {
-        final Integer createdId = tipoRegistroService.create(tipoRegistroDTO);
+            @RequestBody @Valid final RecordTypeDTO recordTypeDTO) {
+        final Integer createdId = recordTypeService.create(recordTypeDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Integer> updateTipoRegistro(@PathVariable final Integer id,
-            @RequestBody @Valid final TipoRegistroDTO tipoRegistroDTO) {
-        tipoRegistroService.update(id, tipoRegistroDTO);
+            @RequestBody @Valid final RecordTypeDTO recordTypeDTO) {
+        recordTypeService.update(id, recordTypeDTO);
         return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTipoRegistro(@PathVariable final Integer id) {
-        tipoRegistroService.delete(id);
+        recordTypeService.delete(id);
         return ResponseEntity.noContent().build();
     }
 

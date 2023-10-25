@@ -15,7 +15,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Usuario {
+public class User {
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -42,6 +42,6 @@ public class Usuario {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_usuario_id")
-    private TipoUsuario tipoUsuario;
+    private UserType tipoUsuario;
 
 }

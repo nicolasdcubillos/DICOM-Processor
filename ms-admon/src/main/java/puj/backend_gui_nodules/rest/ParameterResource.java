@@ -1,7 +1,7 @@
 package puj.backend_gui_nodules.rest;
 
-import puj.backend_gui_nodules.model.ParametroDTO;
-import puj.backend_gui_nodules.service.ParametroService;
+import puj.backend_gui_nodules.model.ParameterDTO;
+import puj.backend_gui_nodules.service.ParameterService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -19,41 +19,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api-ms-admon/parametros", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ParametroResource {
+public class ParameterResource {
 
-    private final ParametroService parametroService;
+    private final ParameterService parameterService;
 
-    public ParametroResource(final ParametroService parametroService) {
-        this.parametroService = parametroService;
+    public ParameterResource(final ParameterService parameterService) {
+        this.parameterService = parameterService;
     }
 
     @GetMapping
-    public ResponseEntity<List<ParametroDTO>> getAllParametros() {
-        return ResponseEntity.ok(parametroService.findAll());
+    public ResponseEntity<List<ParameterDTO>> getAllParametros() {
+        return ResponseEntity.ok(parameterService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ParametroDTO> getParametro(@PathVariable final Integer id) {
-        return ResponseEntity.ok(parametroService.get(id));
+    public ResponseEntity<ParameterDTO> getParametro(@PathVariable final Integer id) {
+        return ResponseEntity.ok(parameterService.get(id));
     }
 
     @PostMapping
     public ResponseEntity<Integer> createParametro(
-            @RequestBody @Valid final ParametroDTO parametroDTO) {
-        final Integer createdId = parametroService.create(parametroDTO);
+            @RequestBody @Valid final ParameterDTO parameterDTO) {
+        final Integer createdId = parameterService.create(parameterDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Integer> updateParametro(@PathVariable final Integer id,
-            @RequestBody @Valid final ParametroDTO parametroDTO) {
-        parametroService.update(id, parametroDTO);
+            @RequestBody @Valid final ParameterDTO parameterDTO) {
+        parameterService.update(id, parameterDTO);
         return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteParametro(@PathVariable final Integer id) {
-        parametroService.delete(id);
+        parameterService.delete(id);
         return ResponseEntity.noContent().build();
     }
 

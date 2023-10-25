@@ -1,6 +1,7 @@
 package puj.backend_gui_nodules.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +9,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegistroDTO {
+public class RecordDTO {
 
     private Integer id;
-    private LocalDate fecha;
+    private LocalDateTime fecha;
     private String uuid;
     private String nombrePaciente;
     private String nombreEstudio;

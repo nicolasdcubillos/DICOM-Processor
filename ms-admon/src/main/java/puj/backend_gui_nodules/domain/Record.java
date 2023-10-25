@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Registro {
+public class Record {
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -24,7 +26,7 @@ public class Registro {
     private Integer id;
 
     @Column
-    private LocalDate fecha;
+    private LocalDateTime fecha;
 
     @Column
     private String uuid;
@@ -43,10 +45,10 @@ public class Registro {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_registro_id")
-    private TipoRegistro tipoRegistro;
+    private RecordType recordType;
 
 }

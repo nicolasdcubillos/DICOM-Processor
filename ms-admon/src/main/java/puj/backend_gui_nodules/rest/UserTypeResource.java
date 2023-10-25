@@ -1,7 +1,7 @@
 package puj.backend_gui_nodules.rest;
 
-import puj.backend_gui_nodules.model.TipoUsuarioDTO;
-import puj.backend_gui_nodules.service.TipoUsuarioService;
+import puj.backend_gui_nodules.model.UserTypeDTO;
+import puj.backend_gui_nodules.service.UserTypeService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -19,41 +19,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api-ms-admon/tipoUsuarios", produces = MediaType.APPLICATION_JSON_VALUE)
-public class TipoUsuarioResource {
+public class UserTypeResource {
 
-    private final TipoUsuarioService tipoUsuarioService;
+    private final UserTypeService userTypeService;
 
-    public TipoUsuarioResource(final TipoUsuarioService tipoUsuarioService) {
-        this.tipoUsuarioService = tipoUsuarioService;
+    public UserTypeResource(final UserTypeService userTypeService) {
+        this.userTypeService = userTypeService;
     }
 
     @GetMapping
-    public ResponseEntity<List<TipoUsuarioDTO>> getAllTipoUsuarios() {
-        return ResponseEntity.ok(tipoUsuarioService.findAll());
+    public ResponseEntity<List<UserTypeDTO>> getAllTipoUsuarios() {
+        return ResponseEntity.ok(userTypeService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoUsuarioDTO> getTipoUsuario(@PathVariable final Integer id) {
-        return ResponseEntity.ok(tipoUsuarioService.get(id));
+    public ResponseEntity<UserTypeDTO> getTipoUsuario(@PathVariable final Integer id) {
+        return ResponseEntity.ok(userTypeService.get(id));
     }
 
     @PostMapping
     public ResponseEntity<Integer> createTipoUsuario(
-            @RequestBody @Valid final TipoUsuarioDTO tipoUsuarioDTO) {
-        final Integer createdId = tipoUsuarioService.create(tipoUsuarioDTO);
+            @RequestBody @Valid final UserTypeDTO userTypeDTO) {
+        final Integer createdId = userTypeService.create(userTypeDTO);
         return new ResponseEntity<>(createdId, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Integer> updateTipoUsuario(@PathVariable final Integer id,
-                                                     @RequestBody @Valid final TipoUsuarioDTO tipoUsuarioDTO) {
-        tipoUsuarioService.update(id, tipoUsuarioDTO);
+                                                     @RequestBody @Valid final UserTypeDTO userTypeDTO) {
+        userTypeService.update(id, userTypeDTO);
         return ResponseEntity.ok(id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTipoUsuario(@PathVariable final Integer id) {
-        tipoUsuarioService.delete(id);
+        userTypeService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
