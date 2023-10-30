@@ -42,18 +42,19 @@ public class ParameterService {
         return parameterRepository.save(parameter).getId();
     }
 
-    public void update(final Integer id, final ParameterDTO parameterDTO) {
+    public Parameter update(final Integer id, final ParameterDTO parameterDTO) {
         final Parameter parameter = parameterRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
         mapToEntity(parameterDTO, parameter);
         parameterRepository.save(parameter);
+        return parameter;
     }
 
     public void delete(final Integer id) {
         parameterRepository.deleteById(id);
     }
 
-    private ParameterDTO mapToDTO(final Parameter parameter, final ParameterDTO parameterDTO) {
+    public ParameterDTO mapToDTO(final Parameter parameter, final ParameterDTO parameterDTO) {
         parameterDTO.setId(parameter.getId());
         parameterDTO.setParametro(parameter.getParametro());
         parameterDTO.setValor(parameter.getValor());
@@ -62,7 +63,7 @@ public class ParameterService {
         return parameterDTO;
     }
 
-    private Parameter mapToEntity(final ParameterDTO parameterDTO, final Parameter parameter) {
+    public Parameter mapToEntity(final ParameterDTO parameterDTO, final Parameter parameter) {
         parameter.setParametro(parameterDTO.getParametro());
         parameter.setValor(parameterDTO.getValor());
         parameter.setDescripcion(parameterDTO.getDescripcion());

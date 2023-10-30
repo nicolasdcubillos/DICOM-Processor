@@ -20,7 +20,7 @@ spring:
           new_generator_mappings: true
 
 server:
-  port: 8081
+  port: 8082
 
 
   #url: ${JDBC_DATABASE_URL:jdbc:mysql://database-1.cbtbx79jvpr1.us-east-2.rds.amazonaws.com:3306/backend_gui_nodules?serverTimezone=UTC}

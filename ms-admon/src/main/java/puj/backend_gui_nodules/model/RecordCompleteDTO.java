@@ -1,7 +1,6 @@
 package puj.backend_gui_nodules.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import puj.backend_gui_nodules.domain.RecordType;
 import puj.backend_gui_nodules.domain.User;
 
@@ -10,6 +9,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class RecordCompleteDTO {
 
     private Integer id;

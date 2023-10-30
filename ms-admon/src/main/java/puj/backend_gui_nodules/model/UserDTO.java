@@ -1,12 +1,14 @@
 package puj.backend_gui_nodules.model;
 
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserDTO {
 
     private Integer id;
