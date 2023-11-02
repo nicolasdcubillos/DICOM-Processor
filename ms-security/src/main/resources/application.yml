@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: dev
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      format_sql: true
+      dialect: org.hibernate.dialect.MySQL5DBDialect
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://database-1.cbtbx79jvpr1.us-east-2.rds.amazonaws.com:3306/backend_gui_nodules?serverTimezone=UTC}
+    username: ${JDBC_DATABASE_USERNAME:admin}
+    password: ${JDBC_DATABASE_PASSWORD:trabajogrado}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  port: 8085
+sicr:
+  seguridad:
+    semilla: 'ae717188d95641b046cfeef1c5c13e7c32e45a2e6a1179344cb91092f39f620c'
+    duracion: 60000
