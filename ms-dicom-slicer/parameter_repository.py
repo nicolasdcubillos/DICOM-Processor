@@ -20,7 +20,7 @@ def get_params():
         if connection.is_connected():
             print("Conexión establecida a la base de datos")
             cursor = connection.cursor()
-            query = "SELECT * FROM parametro"
+            query = "SELECT * FROM parameter"
             cursor.execute(query)
             results = cursor.fetchall()
             
