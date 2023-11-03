@@ -14,13 +14,13 @@ import lombok.*;
 public class RecordDTO {
 
     private Integer id;
-    private LocalDateTime fecha;
-    private String uuid;
-    private String nombrePaciente;
-    private String nombreEstudio;
-    private Boolean seen;
-    private byte[] imagenPrevia;
-    private Integer usuario;
-    private Integer tipoRegistro;
+    private LocalDateTime Date;
+    private String Uuid;
+    private String PatientName;
+    private String StudiName;
+    private Boolean Seen;
+    private byte[] PreviewImage;
+    private Integer Userid;
+    private Integer RecordTypeid;
 
 }

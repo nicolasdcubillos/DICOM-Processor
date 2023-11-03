@@ -86,34 +86,34 @@ public class RecordService {
 
     private RecordDTO mapToDTO(final Record record, final RecordDTO recordDTO) {
         recordDTO.setId(record.getId());
-        recordDTO.setFecha(record.getFecha());
+        recordDTO.setDate(record.getDate());
         recordDTO.setUuid(record.getUuid());
-        recordDTO.setNombrePaciente(record.getNombrePaciente());
-        recordDTO.setNombreEstudio(record.getNombreEstudio());
+        recordDTO.setPatientName(record.getPatientName());
+        recordDTO.setStudiName(record.getStudyName());
         recordDTO.setSeen(record.getSeen());
-        recordDTO.setImagenPrevia(record.getImagenPrevia());
-        recordDTO.setUsuario(record.getUser() == null ? null : record.getUser().getId());
-        recordDTO.setTipoRegistro(record.getRecordType() == null ? null : record.getRecordType().getId());
+        recordDTO.setPreviewImage(record.getPreviewImage());
+        recordDTO.setUserid(record.getUserid() == null ? null : record.getUserid().getId());
+        recordDTO.setRecordTypeid(record.getRecordTypeid() == null ? null : record.getRecordTypeid().getId());
         return recordDTO;
     }
 
     private RecordCompleteDTO mapToCompleteDTO(final Record record, final RecordCompleteDTO recordCompleteDTO) {
         recordCompleteDTO.setId(record.getId());
-        recordCompleteDTO.setFecha(record.getFecha());
+        recordCompleteDTO.setDate(record.getDate());
         recordCompleteDTO.setUuid(record.getUuid());
-        recordCompleteDTO.setNombrePaciente(record.getNombrePaciente());
-        recordCompleteDTO.setNombreEstudio(record.getNombreEstudio());
+        recordCompleteDTO.setPatientName(record.getPatientName());
+        recordCompleteDTO.setStudyName(record.getStudyName());
         recordCompleteDTO.setSeen(record.getSeen());
-        recordCompleteDTO.setImagenPrevia(record.getImagenPrevia());
-        recordCompleteDTO.setUser(record.getUser() == null ? null : record.getUser());
-        recordCompleteDTO.setRecordType(record.getRecordType() == null ? null : record.getRecordType());
+        recordCompleteDTO.setPreviewImage(record.getPreviewImage());
+        recordCompleteDTO.setUserid(record.getUserid() == null ? null : record.getUserid());
+        recordCompleteDTO.setRecordTypeid(record.getRecordTypeid() == null ? null : record.getRecordTypeid());
         return recordCompleteDTO;
     }
 
     private Record mapToEntityUpdateStatus(final Record record, final Integer tipoRegistro) {
         final RecordType recordTypeObj = recordTypeRepository.findById(tipoRegistro)
                 .orElseThrow(() -> new NotFoundException("tipoRegistro not found"));
-        record.setRecordType(recordTypeObj);
+        record.setRecordTypeid(recordTypeObj);
         return record;
     }
 
@@ -124,18 +124,18 @@ public class RecordService {
 
     private Record mapToEntity(final RecordDTO recordDTO, final Record record) {
         ZoneId zonaHorariaColombia = ZoneId.of("America/Bogota");
-        record.setFecha(LocalDateTime.now(zonaHorariaColombia));
+        record.setDate(LocalDateTime.now(zonaHorariaColombia));
         record.setUuid(recordDTO.getUuid());
-        record.setNombrePaciente(recordDTO.getNombrePaciente());
-        record.setNombreEstudio(recordDTO.getNombreEstudio());
+        record.setPatientName(recordDTO.getPatientName());
+        record.setStudyName(recordDTO.getStudiName());
         record.setSeen(recordDTO.getSeen());
-        record.setImagenPrevia(recordDTO.getImagenPrevia());
-        final User user = recordDTO.getUsuario() == null ? null : userRepository.findById(recordDTO.getUsuario())
+        record.setPreviewImage(recordDTO.getPreviewImage());
+        final User user = recordDTO.getUserid() == null ? null : userRepository.findById(recordDTO.getUserid())
                 .orElseThrow(() -> new NotFoundException("usuario not found"));
-        record.setUser(user);
-        final RecordType recordType = recordDTO.getTipoRegistro() == null ? null : recordTypeRepository.findById(recordDTO.getTipoRegistro())
+        record.setUserid(user);
+        final RecordType recordType = recordDTO.getRecordTypeid() == null ? null : recordTypeRepository.findById(recordDTO.getRecordTypeid())
                 .orElseThrow(() -> new NotFoundException("tipoRegistro not found"));
-        record.setRecordType(recordType);
+        record.setRecordTypeid(recordType);
         return record;
     }
 

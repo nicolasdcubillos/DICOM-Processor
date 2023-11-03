@@ -14,23 +14,23 @@ public class UserDTO {
     private Integer id;
 
     @Size(max = 255)
-    private String nombre;
+    private String Name;
 
     @Size(max = 255)
-    private String apellido;
+    private String LastName;
 
     @Size(max = 255)
-    private String username;
+    private String UserName;
 
     @Size(max = 255)
-    private String pass;
+    private String Pass;
 
     @Size(max = 255)
-    private String email;
+    private String Email;
 
     @Size(max = 255)
-    private String telefono;
+    private String Phone;
 
-    private Integer tipoUsuario;
+    private Integer UserTypeid;
 
 }

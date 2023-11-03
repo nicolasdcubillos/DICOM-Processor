@@ -25,25 +25,25 @@ public class User {
     private Integer id;
 
     @Column
-    private String nombre;
+    private String Name;
 
     @Column
-    private String apellido;
+    private String LastName;
 
     @Column
-    private String username;
+    private String UserName;
 
     @Column
-    private String pass;
+    private String Pass;
 
     @Column
-    private String email;
+    private String Email;
 
     @Column
-    private String telefono;
+    private String Phone;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_usuario_id")
-    private UserType tipoUsuario;
+    private UserType UserTypeid;
 
 }

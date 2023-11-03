@@ -14,6 +14,6 @@ public class RecordTypeDTO {
     private Integer id;
 
     @Size(max = 255)
-    private String tipoRegistro;
+    private String RecordType;
 
 }

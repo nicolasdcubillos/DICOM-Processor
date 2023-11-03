@@ -19,6 +19,6 @@ public class RecordType {
     private Integer id;
 
     @Column(unique = true)
-    private String tipoRegistro;
+    private String RecordType;
 
 }

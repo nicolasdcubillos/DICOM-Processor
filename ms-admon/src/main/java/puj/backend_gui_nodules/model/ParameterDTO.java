@@ -14,14 +14,14 @@ public class ParameterDTO {
     private Integer id;
 
     @Size(max = 255)
-    private String parametro;
+    private String Parameter;
 
     @Size(max = 255)
-    private String valor;
+    private String Value;
 
     @Size(max = 255)
-    private String descripcion;
+    private String Description;
 
-    private Integer usuarioModifica;
+    private Integer ModifyUserid;
 
 }

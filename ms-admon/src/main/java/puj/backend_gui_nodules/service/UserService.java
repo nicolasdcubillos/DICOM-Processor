@@ -55,26 +55,26 @@ public class UserService {
 
     private UserDTO mapToDTO(final User user, final UserDTO userDTO) {
         userDTO.setId(user.getId());
-        userDTO.setNombre(user.getNombre());
-        userDTO.setApellido(user.getApellido());
-        userDTO.setUsername(user.getUsername());
+        userDTO.setName(user.getName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setUserName(user.getUserName());
         userDTO.setPass(user.getPass());
         userDTO.setEmail(user.getEmail());
-        userDTO.setTelefono(user.getTelefono());
-        userDTO.setTipoUsuario(user.getTipoUsuario() == null ? null : user.getTipoUsuario().getId());
+        userDTO.setPhone(user.getPhone());
+        userDTO.setUserTypeid(user.getUserTypeid() == null ? null : user.getUserTypeid().getId());
         return userDTO;
     }
 
     private User mapToEntity(final UserDTO userDTO, final User user) {
-        user.setNombre(userDTO.getNombre());
-        user.setApellido(userDTO.getApellido());
-        user.setUsername(userDTO.getUsername());
+        user.setName(userDTO.getName());
+        user.setLastName(userDTO.getLastName());
+        user.setUserName(userDTO.getUserName());
         user.setPass(userDTO.getPass());
         user.setEmail(userDTO.getEmail());
-        user.setTelefono(userDTO.getTelefono());
-        final UserType tipoUsuario = userDTO.getTipoUsuario() == null ? null : userTypeRepository.findById(userDTO.getTipoUsuario())
+        user.setPhone(userDTO.getPhone());
+        final UserType tipoUsuario = userDTO.getUserTypeid() == null ? null : userTypeRepository.findById(userDTO.getUserTypeid())
                 .orElseThrow(() -> new NotFoundException("tipoUsuario not found"));
-        user.setTipoUsuario(tipoUsuario);
+        user.setUserTypeid(tipoUsuario);
         return user;
     }
 
