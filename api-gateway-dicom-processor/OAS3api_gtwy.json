@@ -1,0 +1,101 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "api-gateway-dicom-processor",
+    "description" : "api-gateway-dicom-processor",
+    "version" : "2023-11-14 16:25:12UTC"
+  },
+  "servers" : [ {
+    "url" : "https://f4v094wkui.execute-api.us-east-1.amazonaws.com/{basePath}",
+    "variables" : {
+      "basePath" : {
+        "default" : "dev"
+      }
+    }
+  } ],
+  "paths" : {
+    "/$default" : {
+      "x-amazon-apigateway-any-method" : {
+        "isDefaultRoute" : true,
+        "x-amazon-apigateway-integration" : {
+          "requestParameters" : {
+            "overwrite:path" : "$request.path"
+          },
+          "payloadFormatVersion" : "1.0",
+          "type" : "http_proxy",
+          "httpMethod" : "ANY",
+          "uri" : "http://ec2-44-212-43-128.compute-1.amazonaws.com:5000/",
+          "connectionType" : "INTERNET",
+          "timeoutInMillis" : 30000
+        }
+      }
+    },
+    "/api-ms-admon/{proxy+}" : {
+      "parameters" : [ {
+        "name" : "proxy+",
+        "in" : "path",
+        "description" : "Generated path parameter for proxy+",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "x-amazon-apigateway-any-method" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for ANY /api-ms-admon/{proxy+}"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "requestParameters" : {
+            "overwrite:path" : "$request.path"
+          },
+          "payloadFormatVersion" : "1.0",
+          "type" : "http_proxy",
+          "httpMethod" : "ANY",
+          "uri" : "http://ec2-52-15-218-180.us-east-2.compute.amazonaws.com:8082/",
+          "connectionType" : "INTERNET",
+          "timeoutInMillis" : 30000
+        }
+      }
+    },
+    "/api-ms-dicom-slicer/{proxy+}" : {
+      "parameters" : [ {
+        "name" : "proxy+",
+        "in" : "path",
+        "description" : "Generated path parameter for proxy+",
+        "required" : true,
+        "schema" : {
+          "type" : "string"
+        }
+      } ],
+      "x-amazon-apigateway-any-method" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for ANY /api-ms-dicom-slicer/{proxy+}"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "requestParameters" : {
+            "overwrite:path" : "$request.path"
+          },
+          "payloadFormatVersion" : "1.0",
+          "type" : "http_proxy",
+          "httpMethod" : "ANY",
+          "uri" : "http://ec2-44-212-43-128.compute-1.amazonaws.com:5000/",
+          "connectionType" : "INTERNET",
+          "timeoutInMillis" : 30000
+        }
+      }
+    }
+  },
+  "x-amazon-apigateway-cors" : {
+    "allowMethods" : [ "*" ],
+    "allowHeaders" : [ "*" ],
+    "exposeHeaders" : [ "*" ],
+    "maxAge" : 0,
+    "allowCredentials" : false,
+    "allowOrigins" : [ "*" ]
+  },
+  "x-amazon-apigateway-importexport-version" : "1.0"
+}
