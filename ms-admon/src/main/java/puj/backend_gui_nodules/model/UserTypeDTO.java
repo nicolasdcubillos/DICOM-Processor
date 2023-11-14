@@ -14,6 +14,6 @@ public class UserTypeDTO {
     private Integer id;
 
     @Size(max = 255)
-    private String rol;
+    private String Role;
 
 }

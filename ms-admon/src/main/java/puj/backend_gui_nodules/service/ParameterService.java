@@ -56,20 +56,20 @@ public class ParameterService {
 
     public ParameterDTO mapToDTO(final Parameter parameter, final ParameterDTO parameterDTO) {
         parameterDTO.setId(parameter.getId());
-        parameterDTO.setParametro(parameter.getParametro());
-        parameterDTO.setValor(parameter.getValor());
-        parameterDTO.setDescripcion(parameter.getDescripcion());
-        parameterDTO.setUsuarioModifica(parameter.getUserModifica() == null ? null : parameter.getUserModifica().getId());
+        parameterDTO.setParameter(parameter.getParameter());
+        parameterDTO.setValue(parameter.getValue());
+        parameterDTO.setDescription(parameter.getDescription());
+        parameterDTO.setModifyUserid(parameter.getModifyUserid() == null ? null : parameter.getModifyUserid().getId());
         return parameterDTO;
     }
 
     public Parameter mapToEntity(final ParameterDTO parameterDTO, final Parameter parameter) {
-        parameter.setParametro(parameterDTO.getParametro());
-        parameter.setValor(parameterDTO.getValor());
-        parameter.setDescripcion(parameterDTO.getDescripcion());
-        final User userModifica = parameterDTO.getUsuarioModifica() == null ? null : userRepository.findById(parameterDTO.getUsuarioModifica())
+        parameter.setParameter(parameterDTO.getDescription());
+        parameter.setValue(parameterDTO.getValue());
+        parameter.setDescription(parameterDTO.getDescription());
+        final User userModifica = parameterDTO.getModifyUserid() == null ? null : userRepository.findById(parameterDTO.getModifyUserid())
                 .orElseThrow(() -> new NotFoundException("usuarioModifica not found"));
-        parameter.setUserModifica(userModifica);
+        parameter.setModifyUserid(userModifica);
         return parameter;
     }
 

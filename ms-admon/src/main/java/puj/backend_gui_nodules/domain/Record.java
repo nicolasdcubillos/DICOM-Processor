@@ -28,29 +28,29 @@ public class Record {
     private Integer id;
 
     @Column
-    private LocalDateTime fecha;
+    private LocalDateTime Date;
 
     @Column
-    private String uuid;
+    private String Uuid;
 
     @Column
-    private String nombrePaciente;
+    private String PatientName;
 
     @Column
-    private String nombreEstudio;
+    private String StudyName;
 
     @Column
-    private byte[] imagenPrevia;
+    private byte[] PreviewImage;
 
     @Column
-    private Boolean seen;
+    private Boolean Seen;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
-    private User user;
+    private User Userid;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tipo_registro_id")
-    private RecordType recordType;
+    private RecordType RecordTypeid;
 
 }

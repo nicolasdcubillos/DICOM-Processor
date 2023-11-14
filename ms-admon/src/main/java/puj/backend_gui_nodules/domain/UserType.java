@@ -22,6 +22,6 @@ public class UserType {
     private Integer id;
 
     @Column
-    private String rol;
+    private String Role;
 
 }

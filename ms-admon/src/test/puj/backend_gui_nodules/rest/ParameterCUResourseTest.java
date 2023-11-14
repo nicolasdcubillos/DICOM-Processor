@@ -39,10 +39,10 @@ public class ParameterCUResourseTest {
     @Test
     public void testCreatParameter(){
         ParameterDTO parameterDTO = ParameterDTO.builder()
-                .parametro("PRUEBA")
-                .valor("PRUEBA")
-                .descripcion("PRUEBA")
-                .usuarioModifica(1)
+                .Parameter("PRUEBA")
+                .Value("PRUEBA")
+                .Description("PRUEBA")
+                .ModifyUserid(1)
                 .build();
         Integer savedParameter = this.parameterService.create(parameterDTO);
         Assertions.assertThat(savedParameter).isNotNull();
@@ -52,10 +52,10 @@ public class ParameterCUResourseTest {
     public void testUpdateParameter() {
         int parameterId = 1;
         ParameterDTO parameterDTO = ParameterDTO.builder()
-                .parametro("PRUEBA UPDATE")
-                .valor("PRUEBA UPDATE")
-                .descripcion("PRUEBA UPDATE")
-                .usuarioModifica(1)
+                .Parameter("PRUEBA UPDATE")
+                .Value("PRUEBA UPDATE")
+                .Description("PRUEBA UPDATE")
+                .ModifyUserid(1)
                 .build();
 
         Parameter savedParameter = this.parameterService.update(parameterId,parameterDTO);

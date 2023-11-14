@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 public class RecordCompleteDTO {
 
     private Integer id;
-    private LocalDateTime fecha;
-    private String uuid;
-    private String nombrePaciente;
-    private String nombreEstudio;
-    private Boolean seen;
-    private byte[] imagenPrevia;
-    private User user;
-    private RecordType recordType;
+    private LocalDateTime Date;
+    private String Uuid;
+    private String PatientName;
+    private String StudyName;
+    private Boolean Seen;
+    private byte[] PreviewImage;
+    private User Userid;
+    private RecordType RecordTypeid;
 }

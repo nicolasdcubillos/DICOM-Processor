@@ -51,13 +51,13 @@ public class RecordTypeService {
     private RecordTypeDTO mapToDTO(final RecordType recordType,
                                    final RecordTypeDTO recordTypeDTO) {
         recordTypeDTO.setId(recordType.getId());
-        recordTypeDTO.setTipoRegistro(recordType.getTipoRegistro());
+        recordTypeDTO.setRecordType(recordType.getRecordType());
         return recordTypeDTO;
     }
 
     private RecordType mapToEntity(final RecordTypeDTO recordTypeDTO,
                                    final RecordType recordType) {
-        recordType.setTipoRegistro(recordTypeDTO.getTipoRegistro());
+        recordType.setRecordType(recordTypeDTO.getRecordType());
         return recordType;
     }
 

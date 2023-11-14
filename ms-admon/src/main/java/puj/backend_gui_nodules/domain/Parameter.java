@@ -25,16 +25,16 @@ public class Parameter {
     private Integer id;
 
     @Column
-    private String parametro;
+    private String Parameter;
 
     @Column
-    private String valor;
+    private String Value;
 
     @Column
-    private String descripcion;
+    private String Description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_modifica_id")
-    private User userModifica;
+    private User ModifyUserid;
 
 }

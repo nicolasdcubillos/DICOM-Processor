@@ -51,13 +51,13 @@ public class UserTypeService {
     private UserTypeDTO mapToDTO(final UserType tipoUsuario,
                                  final UserTypeDTO userTypeDTO) {
         userTypeDTO.setId(tipoUsuario.getId());
-        userTypeDTO.setRol(tipoUsuario.getRol());
+        userTypeDTO.setRole(tipoUsuario.getRole());
         return userTypeDTO;
     }
 
     private UserType mapToEntity(final UserTypeDTO userTypeDTO,
                                  final UserType tipoUsuario) {
-        tipoUsuario.setRol(userTypeDTO.getRol());
+        tipoUsuario.setRole(userTypeDTO.getRole());
         return tipoUsuario;
     }
 
