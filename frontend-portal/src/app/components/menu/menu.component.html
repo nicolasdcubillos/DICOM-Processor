@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand " routerLink="/usuario/listar">
+      <img src="../../../assets/LogoPulmones-removebg-preview.png" width="100" height="100" class="d-inline-block" style="border-radius: 50%; margin-left: 20%;" alt="">
+      
+    </a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <div class="dropdown">
+                <li class="nav-item"  >
+                    <a class="nav-link sizeMenu " id="dropdownMenuButton" 
+                        style="cursor: pointer;"
+                        data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-gear"></i> Administrar
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item sizeMenu" routerLink="/usuario/listar"><i class="fa-solid fa-user"></i> Usuarios</a>
+                        <a class="dropdown-item sizeMenu" routerLink="/tipoUsuarios/listar"><i class="fa-solid fa-users-between-lines"></i> Tipo Usuarios</a>
+                        <a class="dropdown-item sizeMenu" routerLink="/tipoRegistros/listar"><i class="fa-solid fa-bars"></i> Tipo Registro</a>
+                        <a class="dropdown-item sizeMenu" routerLink="/parametros/listar"><i class="fa-solid fa-pen-to-square"></i> Parametros</a>
+                    </div>
+                </li>                
+            </div>
+            <li class="nav-item" >
+                <a class="nav-link sizeMenu "  routerLink="/registros/listar"><i class="fa-solid fa-square-poll-horizontal"></i> Resultados</a>
+            </li>
+            <li class="nav-item"  >
+                <a class="nav-link sizeMenu "  routerLink="/view"><i class="fa-solid fa-binoculars"></i> Visualizador</a>
+            </li>
+            <li class="nav-item " (click)="onLogOut()" style="cursor: pointer;">
+                <a class="nav-link sizeMenu"  ><i class="fas fa-door-open"></i> Cerrar Sesión</a>
+            </li>  
+            
+        </ul>
+      </div>
+  </nav>

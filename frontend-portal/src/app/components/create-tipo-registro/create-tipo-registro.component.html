@@ -1,0 +1,27 @@
+<app-menu></app-menu>
+<div class="wrapper">
+      <hr class="justifyLine" width="h-100" color="white"/>
+      <h4  class=" mb-4 col-md-12 col-sm-12 col-12 text-center col-light" *ngIf="!edit"  >Crear Tipo Registros</h4>
+      <h4  class=" mb-4 col-md-12 col-sm-12 col-12 text-center col-light" *ngIf="edit"  >Editar Tipo Registro</h4>
+      <div class="container">
+        <form  [formGroup]="tipoRegistroForm">
+       <div class="row">
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Tipo Registro</label>
+           <input type="text" class="form-control" formControlName="tipoRegistro" id="validationServer013" 
+             required name="tipo_registro" >
+         </div>
+       </div>
+       <button class="btn btn-outline-success btn-block offset-md-4 rounded mt-1" (click)="onCreate()" [disabled]="tipoRegistroForm.invalid" *ngIf="!edit">Crear</button>
+       <button class="btn btn-outline-success btn-block offset-md-4 rounded mt-1" (click)="onEdit()" [disabled]="tipoRegistroForm.invalid" *ngIf="edit">Editar</button>
+       <button  class="btn btn-outline-danger btn block offset-md-1" (click)="irAtras()"> Cancelar</button>
+     </form></div>
+</div>
+
+  
+<div class="overlay" *ngIf="isLoading">
+  <div class="spinner">
+      <div class="loader"></div>
+      <p>Loading...</p>
+  </div>
+</div>

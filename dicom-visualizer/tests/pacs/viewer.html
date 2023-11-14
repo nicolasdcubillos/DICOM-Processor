@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>DWV Test Viewer</title>
+<meta charset="UTF-8">
+<meta name="description" content="DICOM Web Viewer (DWV) simple version">
+<meta name="keywords" content="DICOM,HTML5,JavaScript,medical,imaging,DWV">
+<!-- Style -->
+<style type="text/css">
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+table, td, th {
+  margin: 5px 0;
+  border: 1px solid #aaa;
+  
+}
+table {
+  border-collapse: collapse;
+}
+td, th {
+  padding: 10px;
+}
+progress {
+  width: 40%;
+}
+span {
+  font-size: small;
+  font-style: italic;
+}
+button {
+  margin: 0 5px;
+}
+input[type=number] {
+  width: 75px;
+}
+input[type=range] {
+  width: 100px;
+  margin: 0px 10px;
+}
+#fileinput {
+  width: 50%;
+  border: 1px dotted gray;
+}
+#about {
+  font-size: small;
+  font-style: italic;
+}
+.layerGroup {
+  display:inline-block;
+  height: 500px;
+  width: max(100%, 350px);
+  margin: 5px 5px 5px 0;
+  background-color: #4d4d4d;
+  /* allow child centering */
+  position: relative;
+}
+.layer {
+  /* needed for overlay */
+  position: absolute;
+  /* center */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+canvas {
+  /* avoid parent auto-resize */
+  vertical-align: middle;
+}
+.line {
+  padding: 5px;
+  background-color: #d5d5d5;
+  border-radius: 15px;
+  margin-top: 2%;
+  display: flex; /* Utilizar flexbox */
+  justify-content: center;
+  align-items: center;
+}
+.line-item {
+  display: flex; /* Utilizar flexbox */
+  align-items: center; /* Centrar verticalmente el contenido en cada elemento */
+}
+/** tooltip */
+.layerGroup span {
+  display: none;
+  background-color: palegreen;
+  padding: 2px;
+}
+.layerGroup:hover span {
+  display: inline-block;
+  position: absolute;
+  overflow: hidden;
+}
+/** crossshair */
+.layerGroup hr {
+  pointer-events: none;
+  border: none;
+  position: absolute;
+  margin: 0;
+}
+hr.horizontal {
+  border-top: 2px dashed lime;
+}
+hr.vertical {
+  border-top: 2px dashed lime;
+  transform-origin: left;
+  transform: rotate(90deg);
+}
+.visualizer{
+  size: 4000px;
+  display: grid;
+}
+.table-container {
+    max-height: 300px; /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: scroll; /* Añade una barra de desplazamiento vertical cuando sea necesario */
+}
+.Process_btn {
+    font-size: 20px; /* Ajusta el tamaño de la fuente del texto */
+    padding: 10px 20px; /* Ajusta el relleno (padding) para aumentar el tamaño */
+}
+.container{
+  width: 100%;
+}
+
+.file-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+/* Estilos para los input redondos */
+  input[type="text"],
+  input[type="file"],
+  select {
+    border: 1px solid #aaa;
+    border-radius: 10px; /* Bordes redondos */
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #f0f0f0; /* Color de fondo de la paleta de colores */
+  }
+
+  /* Estilo para el input de tipo checkbox */
+  input[type="checkbox"] {
+    border: 1px solid #aaa;
+    border-radius: 10px; /* Bordes redondos */
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Estilo para el botón */
+  button.Process_btn {
+    border: none;
+    border-radius: 10px; /* Bordes redondos */
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: #0009b6; /* Color de fondo de la paleta de colores */
+    color: #fff; /* Color de texto */
+    cursor: pointer;
+  }
+
+  /* Cambiar el color de fondo del input file */
+  input[type="file"] {
+    background-color: #4d4d4d; /* Color de fondo de la paleta de colores */
+    color: #fff; /* Color de texto */
+  }
+
+  /* Cambiar el color de fondo del botón resetlayout */
+  button#resetlayout {
+    background-color: #dc3545; /* Color de fondo de la paleta de colores */
+    color: #fff; /* Color de texto */
+  }
+
+  /* Cambiar el color de fondo del botón de procesar */
+  button#btn_process {
+    background-color: #007bff; /* Color de fondo de la paleta de colores */
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;  
+    color: #fff; /* Color de texto */
+  }
+
+  /* Estilos para el contenedor del input file */
+.file-upload {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  padding: 10px;
+  background-color: #007bff; /* Color de fondo de la paleta de colores */
+  color: #fff; /* Color de texto */
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Estilos para el input file oculto */
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Estilos para el texto del botón */
+.file-label {
+  display: block;
+  padding: 5px 10px;
+  font-size: 16px;
+}
+
+/* Cambiar el color del botón al pasar el ratón */
+.file-upload:hover {
+  background-color: #0056b3; /* Cambia el color de fondo al pasar el ratón */
+  border: 1px solid #0056b3; /* Cambia el color del borde al pasar el ratón */
+}
+
+progress {
+  width: 100%; /* Asegura que la barra de progreso ocupe todo el ancho disponible */
+  height: 20px; /* Altura de la barra de progreso */
+}
+
+/* Estilos para la tabla */
+#layersdetails table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+/* Estilos para las celdas de encabezado de la tabla */
+#layersdetails th {
+  background-color: #d5d5d5;; /* Color de fondo de la paleta de colores */
+  color: #000000; /* Color de texto */
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+/* Estilos para las celdas de datos de la tabla */
+#layersdetails td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Estilos para las filas impares de la tabla */
+#layersdetails tr:nth-child(odd) {
+  background-color: #f0f0f0; /* Color de fondo alternativo */
+}
+
+/* Estilos para las filas al pasar el ratón por encima */
+#layersdetails tr:hover {
+  background-color: #e0e0e0; /* Cambia el color de fondo al pasar el ratón */
+}
+
+/* Estilos para el botón "+" y "-" en las celdas */
+#layersdetails button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  color: #007bff; /* Color de texto de la paleta de colores */
+}
+
+/* Estilos para el botón "+" al pasar el ratón por encima */
+#layersdetails button:hover {
+  color: #0056b3; /* Cambia el color de texto al pasar el ratón */
+}
+
+
+/* Estilos para la tabla #2 */
+#table_visualizer table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+/* Estilos para las celdas de encabezado de la tabla */
+#table_visualizer th {
+  background-color: #d5d5d5;; /* Color de fondo de la paleta de colores */
+  color: #000000; /* Color de texto */
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+/* Estilos para las celdas de datos de la tabla */
+#table_visualizer td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Estilos para las filas impares de la tabla */
+#table_visualizer tr:nth-child(odd) {
+  background-color: #f0f0f0; /* Color de fondo alternativo */
+}
+
+/* Estilos para las filas al pasar el ratón por encima */
+#table_visualizer tr:hover {
+  background-color: #e0e0e0; /* Cambia el color de fondo al pasar el ratón */
+}
+
+/* Estilos para el botón "+" y "-" en las celdas */
+
+
+
+</style>
+
+<!-- dwv build --><!--
+<script type="text/javascript" src="./node_modules/jszip/dist/jszip.min.js"></script>
+<script type="text/javascript" src="./node_modules/konva/konva.min.js"></script>
+<script type="text/javascript" src="./dist/dwv.min.js"></script>
+--><!-- local -->
+<script type="text/javascript" src="./viewer.js"></script>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="file-container">
+      <div class="file-upload">
+        <input type="file" id="fileinput" class="file-input" />
+        <label for="fileinput" class="file-label">Subir Archivo</label>
+      </div>
+      <progress id="loadprogress" value="0"></progress>
+    </div>
+    
+    <!-- DWV -->
+    <div class="visualizer" id="dwv"></div>  
+    
+    <div class="line">
+      <div class="line-item">
+        <label hidden for="position"><strong>Posición:</strong></label>
+        <input hidden type="text" id="position" autocomplete="off">
+        <span hidden id="positionspan"></span>
+      </div>
+      <div class="line-item" >
+        <label hidden for="changelayout"><strong>Disposición:</strong></label>
+        <select hidden name="layout" id="changelayout" autocomplete="off" disabled>
+          <option hidden value="one">Uno</option>
+          <option hidden value="side">Lado a lado</option>
+          <option hidden value="mpr">MPR</option>
+        </select>
+        <button hidden id="resetlayout" disabled>Restablecer vistas</button>
+        <input hidden type="checkbox" id="changesmoothing">
+        <label hidden for="changesmoothing">Suavizado</label>
+      </div>
+
+      <div class="line-item" style="margin-right: 2%;" id="tools"><strong>Herramientas:</strong></div>
+      
+    </div>
+    
+    <div hidden id="binders" >Carpetas:</div>
+    
+    <div id="layersdetails"></div>
+    
+    <div hidden id="tests">Pruebas:</div>
+    
+    <div hidden id="about">Acerca de: </div>
+    
+  </div>
+  <div class="table_visualizer" id="table_visualizer">
+    <table>
+      <thead>
+          <tr>
+              <th>ID</th>
+              <th>X</th>
+              <th>Y</th>
+              <th>Z</th>
+              <th>Acciones</th>
+          </tr>
+      </thead>
+      <tbody>          
+      </tbody>
+  </table>
+  <button id="btn_process" type="submit" onclick="process()" class="Process_btn">Procesar</button>
+  </div>
+
+
+</body>
+</html>

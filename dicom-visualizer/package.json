@@ -1,0 +1,70 @@
+{
+  "name": "dwv",
+  "version": "0.33.0-beta.4",
+  "description": "DICOM Web Viewer.",
+  "keywords": [
+    "DICOM",
+    "medical",
+    "imaging"
+  ],
+  "license": "GPL-3.0",
+  "author": "ivmartel <ivmartel@gmail.com>",
+  "homepage": "https://ivmartel.github.io/dwv/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ivmartel/dwv.git"
+  },
+  "main": "dist/dwv.min.js",
+  "types": "dist/dwv.d.ts",
+  "engines": {
+    "node": ">= 14.0.0"
+  },
+  "browserslist": [
+    ">1%, last 2 versions, not dead"
+  ],
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "jszip": "~3.10.1",
+    "konva": "~8.4.2",
+    "magic-wand-tool": "~1.1.7",
+    "sweetalert2": "^11.7.28"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@microsoft/api-extractor": "^7.36.0",
+    "babel-loader": "^9.1.2",
+    "babel-plugin-istanbul": "^6.1.1",
+    "benchmark": "~2.1.4",
+    "clean-jsdoc-theme": "^4.2.9",
+    "eslint": "~8.46.0",
+    "eslint-plugin-jsdoc": "~46.4.2",
+    "github-release-notes": "0.17.2",
+    "html-webpack-plugin": "^5.5.3",
+    "jsdoc": "^4.0.2",
+    "karma": "^6.4.2",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-qunit": "^4.1.2",
+    "karma-sourcemap-loader": "^0.4.0",
+    "karma-webpack": "^5.0.0",
+    "qunit": "^2.19.4",
+    "typescript": "^5.0.4",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
+  },
+  "scripts": {
+    "start": "webpack serve --config webpack.dev.js --open --host 0.0.0.0",
+    "pack": "webpack --config webpack.prod.js",
+    "build": "yarn run pack && yarn run types && yarn run api",
+    "lint": "eslint -c '.eslint-full.js' 'src/**/*.js' 'tests/**/*.js' '*.js'",
+    "test": "karma start ./karma.conf.js",
+    "test-ci": "karma start ./karma.conf.js --browsers ChromeHeadless --reporters progress,coverage --single-run",
+    "doc": "jsdoc -c resources/doc/jsdoc.conf.json",
+    "gren": "gren",
+    "types": "tsc -p resources/api/tsconfig.json",
+    "api": "api-extractor run -c resources/api/api-extractor.json --local"
+  }
+}

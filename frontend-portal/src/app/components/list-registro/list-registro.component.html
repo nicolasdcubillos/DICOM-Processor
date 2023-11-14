@@ -1,0 +1,55 @@
+<app-menu></app-menu>
+<div class="wrapper" style="width: 60%; margin-left: auto; margin-right: auto;">
+    <h4 class="title">Resultados</h4>
+    <p class="descripcion">A continuación encontrarás los resultados de clasificación de las regiones de interés
+        de las imágenes TAC procesadas por la inteligencia artificial.</p>
+    <div>
+        <table class="table">
+            <thead class="table-sm" style="color: #666;">
+                <tr>
+                    <th class="colID">ID</th>
+                    <th class="colNombre">Nombre del paciente</th>
+                    <th class="colEstudio">Nombre del estudio</th>
+                    <th class="colVisualizacion">Visualización</th>
+                    <th class="colDetalle">Ver detalle</th>
+                    <th class="colFecha">Fecha de creación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let registro of registros" style="color: #666;">
+                    <td>{{registro.id}}</td>
+                    <td>{{registro.nombrePaciente}}</td>
+                    <td>{{registro.nombreEstudio}}</td>
+
+                    <td>
+                        <button type="button" class="btn"
+                            [ngClass]="{'btn-success': registro.seen, 'btn-warning': !registro.seen}"
+                            style="cursor: default;">
+                            {{ registro.seen ? 'Abierto' : 'Pendiente' }}
+                        </button>
+                    </td>
+                    <td style="padding-left: 23px">
+                        <button class="btn btn-outline-success" (click)="this.redirect(registro)"><i
+                                class="fa-solid fa-eye"></i>
+                            </button>
+                    </td>
+                    <td>
+                        <div style="font-size: 1em; text-transform: capitalize; font-weight: bold; color: black;">
+                            {{ registro.fechaFormateada }}
+                        </div>
+                        <div style="font-size: 0.9em; color: grey;">
+                            {{ registro.fecha | date:'h:mm:ss a' }}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="isLoading">
+    <div class="spinner">
+        <div class="loader"></div>
+        <p>Cargando...</p>
+    </div>
+</div>

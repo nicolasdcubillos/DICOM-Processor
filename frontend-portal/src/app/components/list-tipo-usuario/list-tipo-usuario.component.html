@@ -1,0 +1,35 @@
+<app-menu></app-menu>
+<div class="wrapper" style="width: 60%; margin-left: auto; margin-right: auto;">
+    <h4 class="title">Tipo de Usuarios</h4>
+    <p class = "descripcion">Creación y/o modificación de los tipos de usuarios del sistema.</p>
+    <div class="table table-striped">
+        <table class="table">
+            <thead class="table-sm">
+                <tr>
+                    <th>Id</th>
+                    <th>Rol</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tipo of tipoUsuarios">
+                    <td>{{tipo.id}}</td>
+                    <td>{{tipo.rol}}</td>
+                    <td><button class="btn btn-outline-warning" routerLink="/tipoUsuarios/editar/{{tipo.id}}"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button class="btn btn-outline-danger" (click)="confirmarEliminar(tipo)"><i class="fa-solid fa-trash-can"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mx-auto" style="width: 200px;">
+        <button type="button" class="btn btn-success"  [routerLink]="['/tipoUsuarios/crear']">Crear Tipo Usuario</button>
+      </div>
+</div>
+
+<div class="overlay" *ngIf="isLoading">
+    <div class="spinner">
+        <div class="loader"></div>
+        <p>Loading...</p>
+    </div>
+</div>

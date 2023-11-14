@@ -1,0 +1,35 @@
+<app-menu></app-menu>
+<div class="wrapper" style="width: 60%; margin-left: auto; margin-right: auto;">
+    <h4 class="title">Tipo de Registro</h4>
+    <p class = "descripcion">Creación y/o modificación de los tipos de registro del sistema (estados que puede tener una imagen TAC).</p>
+    <div class="table table-striped">
+        <table class="table">
+            <thead class="table-sm">
+                <tr>
+                    <th>Id</th>
+                    <th>Tipo Registro</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tipo of tipoRegistro">
+                    <td>{{tipo.id}}</td>
+                    <td>{{tipo.tipoRegistro}}</td>
+                    <td><button class="btn btn-outline-warning" routerLink="/tipoRegistros/editar/{{tipo.id}}"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button class="btn btn-outline-danger" (click)="confirmarEliminar(tipo)"><i class="fa-solid fa-trash-can"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mx-auto" style="width: 200px;">
+        <button type="button" class="btn btn-success"  [routerLink]="['/tipoRegistros/crear']">Crear Tipo Registro</button>
+      </div>
+</div>
+
+<div class="overlay" *ngIf="isLoading">
+    <div class="spinner">
+        <div class="loader"></div>
+        <p>Loading...</p>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+<app-menu></app-menu>
+<div class="wrapper">
+    
+    
+      <hr class="justifyLine" width="h-100" color="white"/>
+      <h4  class=" mb-4 col-md-12 col-sm-12 col-12 text-center col-light" *ngIf="!edit"  >Crear Usuario</h4>
+      <h4  class=" mb-4 col-md-12 col-sm-12 col-12 text-center col-light" *ngIf="edit"  >Editar Usuario</h4>
+      <div class="container">
+        <form  [formGroup]="userForm">
+       <div class="row">
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Nombre</label>
+           <input type="text" class="form-control" formControlName="nombre" id="validationServer013" 
+             required name="nombre" >
+         </div>
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Apellido</label>
+           <input type="text" class="form-control" formControlName="apellido" id="validationServer013" 
+             required name="apellido" >
+         </div>
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Email</label>
+           <input type="text" class="form-control" formControlName="email" id="validationServer013" 
+             required name="email" >
+         </div>
+       </div>
+       <div class="row">
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Telefono</label>
+           <input type="text" class="form-control" formControlName="telefono" id="validationServer013" 
+             required name="telefono" >
+         </div>
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Usuario</label>
+           <input type="text" class="form-control" formControlName="username" id="validationServer013" 
+             required name="username" >
+         </div>
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Tipo Usuario</label>
+           <select type="text" class="form-control " id="validationServer053"
+            formControlName="tipoUsuario"
+             required name="tipoUsuario" >
+                <option></option>
+                <option *ngFor="let tipo of tipoUsaurioList"
+                    value="{{tipo.id}}">
+                    {{tipo.rol}}
+                </option>
+            </select>
+         </div>
+       </div>
+       <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="validationServer013">Contraseña</label>
+                <input type="text" class="form-control" formControlName="pass" id="validationServer013" 
+                required name="pass" >
+            </div>
+       </div>
+       <button class="btn btn-outline-success btn-block offset-md-4 rounded mt-1" (click)="onCreate()" [disabled]="userForm.invalid" *ngIf="!edit">Crear</button>
+       <button class="btn btn-outline-success btn-block offset-md-4 rounded mt-1" (click)="onEdit()" [disabled]="userForm.invalid" *ngIf="edit">Editar</button>
+       <button  class="btn btn-outline-danger btn block offset-md-1" (click)="irAtras()"> Cancelar</button>
+     </form></div>
+</div>
+
+<div class="overlay" *ngIf="isLoading">
+  <div class="spinner">
+      <div class="loader"></div>
+      <p>Loading...</p>
+  </div>
+</div>

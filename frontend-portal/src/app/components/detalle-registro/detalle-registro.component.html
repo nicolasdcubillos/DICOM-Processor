@@ -1,0 +1,53 @@
+<app-menu></app-menu>
+<div class="wrapper" style="width: 60%; margin-left: auto; margin-right: auto;" *ngIf="resultDetail != null">
+  <h4 class="title" style="text-align: center; ">Detalle del resultado</h4>
+  <div class="image-container">
+    <img [src]="'data:image/png;base64,' + resultDetail.imagenPrevia" alt="Imagen">
+  </div>
+  <div class="data-container">
+    <div class="data-block">
+      <p><strong>ID</strong><br> {{ resultDetail.id }}</p>
+      <p><strong>Fecha</strong><br> {{ resultDetail.fecha | date:'dd-MM-yyyy'}}</p>
+      <p><strong>UUID</strong><br> {{ resultDetail.uuid }}</p>
+    </div>
+    <div class="data-block">
+      <p><strong>Nombre del Paciente</strong><br> {{ resultDetail.nombrePaciente }}</p>
+      <p><strong>Nombre del Estudio</strong><br> {{ resultDetail.nombreEstudio }}</p>
+    </div>
+    <div class="data-block">
+      <p><strong>Usuario</strong><br> {{ resultDetail.user.nombre }} {{ resultDetail.user.apellido }}</p>
+      <p><strong>Email</strong><br> {{ resultDetail.user.email }}</p>
+      <p><strong>Teléfono</strong><br> {{ resultDetail.user.telefono }}</p>
+    </div>
+    <div class="data-block" [ngStyle]="{ 'background-color': getColorBackground(resultDetail.recordType.id) }">
+      <p><strong>Clasificado por la IA como</strong><br> {{ resultDetail.recordType.tipoRegistro }}</p>
+      <i *ngIf="resultDetail.recordType.id === 1 || resultDetail.recordType.id === 2"
+        class="fa-solid fa-triangle-exclamation"
+        style="font-size: 80px; display: block; text-align: center; margin-top: 10px;"></i>
+      <i *ngIf="resultDetail.recordType.id === 3 || resultDetail.recordType.id === 4"
+        class="fa-solid fa-circle-check"
+        style="font-size: 80px; display: block; text-align: center; margin-top: 10px;"></i>
+    </div>
+  </div>
+
+</div>
+
+<div class="overlay" *ngIf="processing">
+  <div class="spinner">
+    <div class="loader"></div>
+    <p>Loading...</p>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="processing">
+  <div class="spinner">
+    <div class="loader"></div>
+    <p>SU SOLICITUD SE ESTA PROCESANDO</p>
+    <div class="btn-group">
+      <button class="btn btn-outline-success btn-block rounded mt-1" (click)="ngOnInit()"><i
+          class="fa-solid fa-magnifying-glass"></i>Volver a consultar resultado</button>
+      <div class="mx-2"></div>
+      <button class="btn btn-outline-primary btn-block rounded mt-1" (click)="ngOnInit()">Volver a menu</button>
+    </div>
+  </div>
+</div>

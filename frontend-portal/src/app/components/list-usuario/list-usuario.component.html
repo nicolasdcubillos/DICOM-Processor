@@ -1,0 +1,39 @@
+<app-menu></app-menu>
+<div class="wrapper" style="width: 60%; margin-left: auto; margin-right: auto;">
+    <h4 class="title">Usuarios</h4>
+    <p class = "descripcion">Creación y/o modificación de los usuarios que acceden al sistema.</p>
+    <div class="table table-striped">
+        <table class="table">
+            <thead class="table-sm">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Correo</th>
+                    <th>Telefono</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.nombre}} {{user.apellido}}</td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.telefono}}</td>
+                    <td><button class="btn btn-outline-warning" routerLink="/usuario/editar/{{user.id}}"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button class="btn btn-outline-danger" (click)="confirmarEliminar(user)"><i class="fa-solid fa-trash-can"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mx-auto" style="width: 200px;">
+        <button type="button" class="btn btn-success"  [routerLink]="['/usuario/crear']">Crear Usuario</button>
+      </div>
+</div>
+
+<div class="overlay" *ngIf="isLoading">
+    <div class="spinner">
+        <div class="loader"></div>
+        <p>Loading...</p>
+    </div>
+</div>

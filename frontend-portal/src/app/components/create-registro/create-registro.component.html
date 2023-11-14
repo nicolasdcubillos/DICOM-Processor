@@ -1,0 +1,55 @@
+<app-menu></app-menu>
+<div class="wrapper">
+    
+    
+      <hr class="justifyLine" width="h-100" color="white"/>
+      <h4  class=" mb-4 col-md-12 col-sm-12 col-12 text-center col-light" *ngIf="!edit"  >Crear Usuario</h4>
+      <h4  class=" mb-4 col-md-12 col-sm-12 col-12 text-center col-light" *ngIf="edit"  >Editar Usuario</h4>
+      <div class="container">
+        <form  [formGroup]="userForm">
+       <div class="row">
+         <div class="col-md-4 mb-3">
+           <label for="validationServer013">Fecha</label>
+           <input type="date" class="form-control" formControlName="fecha" id="validationServer013" 
+             required name="fecha" >
+         </div>
+         <div class="col-md-4 mb-3">
+            <label for="validationServer013">Tipo Registro</label>
+            <select type="text" class="form-control " id="validationServer053"
+             formControlName="tipoRegistro"
+              required name="tipoRegistro" >
+                 <option></option>
+                 <option *ngFor="let tipo of tipoRegistroList"
+                     value="{{tipo.id}}">
+                     {{tipo.tipoRegistro}}
+                 </option>
+             </select>
+          </div>
+         <div class="col-md-4 mb-3">
+            <label for="validationServer013">UUID</label>
+            <input type="text" class="form-control" formControlName="uuid" id="validationServer013" 
+             required name="uuid" >
+          </div>
+         
+       </div>
+       <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="validationServer013">Usuario</label>
+            <select type="text" class="form-control " id="validationServer053"
+             formControlName="usuario"
+              required name="usuario">
+                 <option></option>
+                 <option *ngFor="let user of usersList"
+                     value="{{user.id}}">
+                     {{user.nombre + ' ' + user.apellido}}
+                 </option>
+             </select>
+          </div>
+       </div>
+       <button class="btn btn-outline-success btn-block offset-md-4 rounded mt-1" (click)="onCreate()" [disabled]="userForm.invalid" *ngIf="!edit">Crear</button>
+       <button class="btn btn-outline-success btn-block offset-md-4 rounded mt-1" (click)="onEdit()" [disabled]="userForm.invalid" *ngIf="edit">Editar</button>
+       <button  class="btn btn-outline-danger btn block offset-md-1" (click)="irAtras()"> Cancelar</button>
+     </form></div>
+</div>
+
+  

@@ -1,0 +1,14 @@
+.wrapper{
+    background-color: #ffffff;
+}
+.dwv{
+    position: relative;
+    padding-bottom: 56.25%; 
+    height: 100%;
+    width: 100%;
+}
+
+.container{
+    width: 250vh;
+    height: 290vh;
+}
